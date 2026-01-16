@@ -83,22 +83,27 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* CRITICAL: Start invisible. We only fade in when we KNOW it is playing. */
-            opacity: 0;
-            transition: opacity 0.8s ease-in;
-            /* CRITICAL: Prevents iOS from treating this as an interactive media element */
+            /* Removed opacity: 0 to ensure video is visible immediately even if paused */
+            /* This prevents the black screen issue if autoplay is delayed */
             pointer-events: none;
         }
 
-        .video-bg.is-playing {
-            opacity: 1;
-        }
-
-        /* Force hide controls on iOS */
+        /* HIDE VIDEO CONTROLS FORCEFULLY */
         video::-webkit-media-controls { display: none !important; }
         video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
         video::-webkit-media-controls-play-button { display: none !important; }
         video::-webkit-media-controls-panel { display: none !important; }
+
+        /* SHIELD: Invisible div to block all touch events on video */
+        .video-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Sits on top of video */
+            background: transparent;
+        }
 
         .video-overlay {
             position: absolute;
@@ -152,7 +157,10 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- added muted, playsinline, webkit-playsinline -->
+        <!-- Shield to block touches/icons -->
+        <div class="video-shield"></div>
+        
+        <!-- Force Autoplay settings -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
         </video>
@@ -192,7 +200,8 @@
                         <img src="assets/logo-center-1.svg" alt="Feature Logo 1" class="w-full h-full object-contain">
                     </div>
                     
-                    <div class="gsap-center-logo w-32 md:w-48 lg:w-56 h-auto">
+                    <!-- Right Logo (Size reduced slightly: w-32->w-28, md:w-48->w-40, lg:w-56->w-48) -->
+                    <div class="gsap-center-logo w-28 md:w-40 lg:w-48 h-auto">
                         <img src="assets/logo-center-2.svg" alt="Feature Logo 2" class="w-full h-full object-contain">
                     </div>
                 </div>
@@ -292,25 +301,16 @@
             // AUTO-PLAY LOGIC:
             const video = document.getElementById("bg-video");
             
-            // Function to reveal video ONLY when time updates (proof it's moving)
-            const handleTimeUpdate = () => {
-                if (video.currentTime > 0) {
-                    video.classList.add('is-playing');
-                    video.removeEventListener('timeupdate', handleTimeUpdate);
-                }
-            };
-
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                video.addEventListener('timeupdate', handleTimeUpdate);
                 
                 // Aggressive play attempt
                 const attemptPlay = () => {
                     video.play().catch(e => {
                         console.log("Autoplay check:", e);
                         // If blocked, we rely on the first user interaction (touch/scroll) to unlock it
-                        // but the user won't see a play button because of our CSS/opacity
+                        // but the user won't see a play button because of our CSS shield/opacity settings
                         window.addEventListener('touchstart', () => video.play(), { once: true });
                         window.addEventListener('scroll', () => video.play(), { once: true });
                     });
