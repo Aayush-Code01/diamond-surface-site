@@ -83,16 +83,19 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Removed opacity: 0 to ensure video is visible immediately even if paused */
-            /* This prevents the black screen issue if autoplay is delayed */
             pointer-events: none;
         }
 
-        /* HIDE VIDEO CONTROLS FORCEFULLY */
-        video::-webkit-media-controls { display: none !important; }
-        video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
-        video::-webkit-media-controls-play-button { display: none !important; }
-        video::-webkit-media-controls-panel { display: none !important; }
+        /* HIDE VIDEO CONTROLS FORCEFULLY (Including Overlay Play Button) */
+        video::-webkit-media-controls,
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-panel,
+        video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+            -webkit-appearance: none !important;
+            opacity: 0 !important;
+        }
 
         /* SHIELD: Invisible div to block all touch events on video */
         .video-shield {
@@ -160,8 +163,8 @@
         <!-- Shield to block touches/icons -->
         <div class="video-shield"></div>
         
-        <!-- Force Autoplay settings -->
-        <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
+        <!-- Force Autoplay settings with disable attributes -->
+        <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablePictureInPicture disableremoteplayback class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
@@ -200,8 +203,8 @@
                         <img src="assets/logo-center-1.svg" alt="Feature Logo 1" class="w-full h-full object-contain">
                     </div>
                     
-                    <!-- Right Logo (Size reduced slightly: w-32->w-28, md:w-48->w-40, lg:w-56->w-48) -->
-                    <div class="gsap-center-logo w-28 md:w-40 lg:w-48 h-auto">
+                    <!-- Right Logo (Size reduced further: w-28->w-24, md:w-40->w-36, lg:w-48->w-40) -->
+                    <div class="gsap-center-logo w-24 md:w-36 lg:w-40 h-auto">
                         <img src="assets/logo-center-2.svg" alt="Feature Logo 2" class="w-full h-full object-contain">
                     </div>
                 </div>
