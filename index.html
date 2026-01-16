@@ -18,9 +18,11 @@
     <meta property="og:description" content="Watch this space for updates on our latest products..">
     
     <!-- FIX: Enhanced Image Tags for WhatsApp -->
+    <!-- Added ?v=1 to force cache refresh -->
     <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:type" content="image/png">
+    <!-- Recommended dimensions for social images -->
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -138,9 +140,8 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Added 'id="bg-video"' for JS targeting -->
-        <!-- Added 'poster' attribute as fallback image -->
-        <video id="bg-video" autoplay muted loop playsinline preload="auto" poster="assets/social-image.png" class="video-bg">
+        <!-- Added webkit-playsinline for older iOS -->
+        <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/social-image.png" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -281,27 +282,33 @@
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // Force Video Autoplay Logic
+            // Force Video Autoplay Logic with Fallback
             const video = document.getElementById("bg-video");
-            if (video) {
-                // Ensure muted is set (critical for autoplay)
-                video.muted = true;
-                
-                // Attempt to play immediately
-                const playPromise = video.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        // Automatic playback started!
-                        console.log("Video playing automatically");
-                    })
-                    .catch(error => {
-                        // Auto-play was prevented
-                        console.log("Video autoplay prevented: ", error);
-                        // Optional: You could show a "Play" button here if desired
-                        // But we have the 'poster' image as a nice fallback
-                    });
+            
+            const startVideo = () => {
+                if(video.paused) {
+                    video.muted = true;
+                    video.defaultMuted = true;
+                    video.play().then(() => {
+                        console.log("Video started via interaction fallback");
+                        // Remove listener once successful
+                        document.removeEventListener('touchstart', startVideo);
+                        document.removeEventListener('click', startVideo);
+                    }).catch(e => console.log("Still blocked", e));
                 }
+            };
+
+            if (video) {
+                video.muted = true;
+                video.defaultMuted = true;
+                
+                // Attempt 1: Automatic
+                video.play().catch(error => {
+                    console.log("Autoplay blocked, waiting for interaction...");
+                    // Attempt 2: Wait for ANY touch or click to start video
+                    document.addEventListener('touchstart', startVideo, { once: true });
+                    document.addEventListener('click', startVideo, { once: true });
+                });
             }
 
             // Helper to split text into characters without creating layout shifts
