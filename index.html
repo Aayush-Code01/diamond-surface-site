@@ -83,25 +83,22 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Removed opacity:0 to ensure immediate visibility */
+            /* CRITICAL: Start invisible. We only fade in when we KNOW it is playing. */
+            opacity: 0;
+            transition: opacity 0.8s ease-in;
+            /* CRITICAL: Prevents iOS from treating this as an interactive media element */
+            pointer-events: none;
         }
 
-        /* HIDE VIDEO CONTROLS FORCEFULLY */
+        .video-bg.is-playing {
+            opacity: 1;
+        }
+
+        /* Force hide controls on iOS */
         video::-webkit-media-controls { display: none !important; }
         video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
         video::-webkit-media-controls-play-button { display: none !important; }
-        video::-webkit-media-controls-overlay-play-button { display: none !important; }
-
-        /* SHIELD: Invisible div to block all touch events on video */
-        .video-shield {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2; /* Sits on top of video */
-            background: transparent;
-        }
+        video::-webkit-media-controls-panel { display: none !important; }
 
         .video-overlay {
             position: absolute;
@@ -155,13 +152,9 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Shield to block touches/icons -->
-        <div class="video-shield"></div>
-        
-        <!-- Force Autoplay settings -->
+        <!-- added muted, playsinline, webkit-playsinline -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
         <div class="video-overlay"></div>
     </div>
@@ -296,30 +289,33 @@
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // Force Video Autoplay Logic with Fallback
+            // AUTO-PLAY LOGIC:
             const video = document.getElementById("bg-video");
             
-            const startVideo = () => {
-                if(video.paused) {
-                    video.muted = true;
-                    video.defaultMuted = true;
-                    video.play().then(() => {
-                        console.log("Video started via interaction fallback");
-                        document.removeEventListener('touchstart', startVideo);
-                        document.removeEventListener('click', startVideo);
-                    }).catch(e => console.log("Still blocked", e));
+            // Function to reveal video ONLY when time updates (proof it's moving)
+            const handleTimeUpdate = () => {
+                if (video.currentTime > 0) {
+                    video.classList.add('is-playing');
+                    video.removeEventListener('timeupdate', handleTimeUpdate);
                 }
             };
 
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                // Force play immediately (don't wait for DOM to fully finish if possible)
-                video.play().catch(error => {
-                    console.log("Autoplay blocked, waiting for interaction...");
-                    document.addEventListener('touchstart', startVideo, { once: true });
-                    document.addEventListener('click', startVideo, { once: true });
-                });
+                video.addEventListener('timeupdate', handleTimeUpdate);
+                
+                // Aggressive play attempt
+                const attemptPlay = () => {
+                    video.play().catch(e => {
+                        console.log("Autoplay check:", e);
+                        // If blocked, we rely on the first user interaction (touch/scroll) to unlock it
+                        // but the user won't see a play button because of our CSS/opacity
+                        window.addEventListener('touchstart', () => video.play(), { once: true });
+                        window.addEventListener('scroll', () => video.play(), { once: true });
+                    });
+                };
+                attemptPlay();
             }
 
             const splitTextToChars = (elements) => {
@@ -393,5 +389,3 @@
     </script>
 </body>
 </html>
-
-
