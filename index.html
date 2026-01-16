@@ -88,6 +88,21 @@
             object-fit: cover;
         }
 
+        /* HIDE VIDEO CONTROLS FORCEFULLY */
+        video::-webkit-media-controls {
+            display: none !important;
+        }
+        video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+            -webkit-appearance: none;
+        }
+        video::-webkit-media-controls-play-button {
+            display: none !important;
+        }
+        video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+        }
+
         .video-overlay {
             position: absolute;
             top: 0;
@@ -96,6 +111,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 1;
+            pointer-events: none; /* Let clicks pass through to video/body */
         }
 
         /* Glassmorphism Section */
@@ -139,7 +155,7 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Removed 'poster' attribute to prevent showing the social image -->
+        <!-- Force Autoplay: muted, playsinline, and webkit-playsinline are key -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -155,12 +171,10 @@
             
             <!-- Header -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
-                <!-- Header logo: Visible on mobile (w-48), larger on desktop (md:w-64) -->
                 <div class="logo-container w-48 md:w-64">
                     <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain">
                 </div>
 
-                <!-- Desktop Socials: Hidden on mobile (hidden), Flex on desktop (md:flex) -->
                 <div class="socials hidden md:flex items-center gap-6">
                     <a href="#" class="social-icon" aria-label="Instagram">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -194,8 +208,6 @@
                 
             </div>
 
-            <!-- Mobile Social Icons Container: Visible only on mobile (md:hidden), positioned above arrow -->
-            <!-- Position: bottom-40 on mobile -->
             <div class="gsap-socials-mobile absolute bottom-40 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
                 <a href="#" class="social-icon" aria-label="Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -208,8 +220,6 @@
                 </a>
             </div>
 
-            <!-- Arrow Moved OUTSIDE flex container and anchored to bottom of hero section -->
-            <!-- Adjusted bottom spacing: bottom-24 on mobile, bottom-10 on desktop -->
             <div class="absolute bottom-24 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
                 <a href="#contact" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
@@ -218,7 +228,7 @@
 
         </section>
 
-        <!-- Glass Effect Contact Section - Added ID and min-h-screen -->
+        <!-- Glass Effect Contact Section -->
         <section id="contact" class="glass-section w-full min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center">
             
             <div class="max-w-3xl mx-auto space-y-12">
@@ -299,11 +309,9 @@
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                
-                // Attempt 1: Automatic
+                // Force play on load
                 video.play().catch(error => {
                     console.log("Autoplay blocked, waiting for interaction...");
-                    // Attempt 2: Wait for ANY touch or click to start video
                     document.addEventListener('touchstart', startVideo, { once: true });
                     document.addEventListener('click', startVideo, { once: true });
                 });
