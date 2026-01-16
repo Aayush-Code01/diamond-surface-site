@@ -165,8 +165,9 @@
                 </div>
 
                 <h1 class="gsap-text text-2xl md:text-4xl lg:text-5xl font-light tracking-wide leading-relaxed max-w-4xl mx-auto px-4">
-                    <span class="block md:inline">A new experience</span>
-                    <span class="block md:inline">is coming soon</span>
+                    <!-- Replaced 'gsap-scramble' with 'gsap-char-reveal' -->
+                    <span class="gsap-char-reveal block md:inline">A new experience</span>
+                    <span class="gsap-char-reveal block md:inline">is coming soon</span>
                 </h1>
                 
                 <!-- Arrow updated with higher z-index and explicit positioning -->
@@ -240,6 +241,24 @@
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
+            // Helper to split text into characters without creating layout shifts
+            const splitTextToChars = (elements) => {
+                elements.forEach(el => {
+                    const text = el.textContent;
+                    // Split text but preserve spaces with a specific width
+                    const chars = text.split("").map(char => {
+                        if (char === " ") {
+                            return `<span class="char-space" style="display:inline-block; width:0.25em;">&nbsp;</span>`;
+                        }
+                        return `<span class="char-anim" style="display:inline-block; opacity:0;">${char}</span>`;
+                    }).join("");
+                    el.innerHTML = chars;
+                });
+            };
+
+            // Initialize split text
+            splitTextToChars(document.querySelectorAll(".gsap-char-reveal"));
+
             const tl = gsap.timeline();
 
             tl.from(".gsap-header", {
@@ -258,10 +277,15 @@
                 ease: "back.out(1.7)"
             }, "-=0.5");
 
-            tl.from(".gsap-text", {
-                y: 40,
-                opacity: 0,
-                duration: 1,
+            // New Animation: Blur + Zoom In Reveal
+            // Using to() because we set opacity:0 in the splitTextToChars helper
+            tl.to(".char-anim", {
+                opacity: 1,
+                filter: "blur(0px)",
+                scale: 1,
+                startAt: { filter: "blur(10px)", scale: 0.8 }, // Start blurred and slightly small (zoomed out)
+                duration: 0.8,
+                stagger: 0.04, // Stagger each letter
                 ease: "power2.out"
             }, "-=0.5");
 
@@ -271,8 +295,7 @@
                 delay: 0.5
             });
             
-            // Simplified parallax: Just subtle opacity fade on hero text, NO movement.
-            // Movement conflicts with sticky positioning.
+            // Simplified parallax
             gsap.to(".hero-section", {
                 scrollTrigger: {
                     trigger: ".hero-section",
@@ -280,8 +303,7 @@
                     end: "bottom top",
                     scrub: true
                 },
-                opacity: 0.5, // Fade out slightly
-                // Removed y: -100 to prevent sticky conflict
+                opacity: 0.5,
             });
         });
     </script>
