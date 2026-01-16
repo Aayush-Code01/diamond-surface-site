@@ -77,7 +77,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             position: relative;
-            z-index: 20;
+            z-index: 20; /* Higher z-index to scroll OVER the sticky hero */
             box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
 
@@ -89,7 +89,9 @@
 
         .hero-section {
             height: 100vh;
-            position: relative;
+            position: sticky; /* Make hero sticky */
+            top: 0;          /* Stays at top */
+            z-index: 0;      /* Behind the glass section */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -145,7 +147,7 @@
             </header>
 
             <!-- Center Content -->
-            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0">
+            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative">
                 
                 <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 md:mb-12">
                     <!-- Left Logo (Made Taller/Larger): w-40 -> w-60 -> w-72 -->
@@ -166,8 +168,8 @@
                     <span class="block md:inline">is coming soon</span>
                 </h1>
                 
-                <!-- Arrow updated to Anchor tag linking to #contact -->
-                <a href="#contact" class="gsap-arrow absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
+                <!-- Arrow updated with higher z-index and explicit positioning -->
+                <a href="#contact" class="gsap-arrow absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity z-50">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
                 </a>
             </div>
@@ -263,6 +265,8 @@
                 delay: 0.5
             });
             
+            // Simplified parallax: Just subtle opacity fade on hero text, NO movement.
+            // Movement conflicts with sticky positioning.
             gsap.to(".hero-section", {
                 scrollTrigger: {
                     trigger: ".hero-section",
@@ -270,8 +274,8 @@
                     end: "bottom top",
                     scrub: true
                 },
-                opacity: 0,
-                y: -100, 
+                opacity: 0.5, // Fade out slightly
+                // Removed y: -100 to prevent sticky conflict
             });
         });
     </script>
