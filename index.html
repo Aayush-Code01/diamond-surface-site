@@ -73,9 +73,10 @@
 
         /* Glassmorphism Section */
         .glass-section {
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.4); /* Reduced opacity for better glass effect */
+            backdrop-filter: blur(20px); /* Increased blur */
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
             position: relative;
             z-index: 20; /* Higher z-index to scroll OVER the sticky hero */
             box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
@@ -219,8 +220,13 @@
                 </div>
             </div>
 
+            <!-- Back to Top Arrow -->
+            <div class="mt-16 mb-4 animate-bounce opacity-70 hover:opacity-100 transition-opacity cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-180"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+            </div>
+
             <!-- Footer -->
-            <footer class="mt-20 pt-8 border-t border-white/10 w-full max-w-6xl">
+            <footer class="pt-4 border-t border-white/10 w-full max-w-6xl">
                 <p class="text-sm text-gray-400">
                     &copy; 2025 Diamond Surface. All rights reserved.
                 </p>
