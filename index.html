@@ -18,8 +18,9 @@
     <meta property="og:description" content="Watch this space for updates on our latest products..">
     
     <!-- FIX: Enhanced Image Tags for WhatsApp -->
-    <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png">
-    <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png">
+    <!-- Added ?v=1 to force cache refresh -->
+    <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
+    <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:type" content="image/png">
     <!-- Recommended dimensions for social images -->
     <meta property="og:image:width" content="1200">
@@ -30,7 +31,7 @@
     <meta property="twitter:url" content="https://diamondsurface.co/">
     <meta property="twitter:title" content="Diamond Surface - Coming Soon">
     <meta property="twitter:description" content="Watch this space for updates on our latest products..">
-    <meta property="twitter:image" content="https://diamondsurface.co/assets/social-image.png">
+    <meta property="twitter:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -155,13 +156,15 @@
             
             <!-- Header -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
-                <!-- Header logo: Hidden on mobile, shown on desktop (md:block) with w-64 -->
-                <div class="logo-container hidden md:block md:w-64">
+                <!-- Header logo: Visible on mobile (w-48), larger on desktop (md:w-64) -->
+                <!-- Removed hidden class to show on mobile -->
+                <div class="logo-container w-48 md:w-64">
                     <!-- Header logo is PNG -->
                     <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain">
                 </div>
 
-                <div class="socials flex items-center gap-6">
+                <!-- Desktop Socials: Hidden on mobile (hidden), Flex on desktop (md:flex) -->
+                <div class="socials hidden md:flex items-center gap-6">
                     <a href="#" class="social-icon" aria-label="Instagram">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
@@ -197,6 +200,19 @@
                     <span class="gsap-char-reveal block md:inline">is coming soon</span>
                 </h1>
                 
+            </div>
+
+            <!-- Mobile Social Icons Container: Visible only on mobile (md:hidden), positioned above arrow -->
+            <div class="gsap-socials-mobile absolute bottom-28 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
+                <a href="#" class="social-icon" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="#" class="social-icon" aria-label="TikTok">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
             </div>
 
             <!-- Arrow Moved OUTSIDE flex container and anchored to bottom of hero section -->
@@ -297,6 +313,7 @@
 
             const tl = gsap.timeline();
 
+            // Animate Header (including logo)
             tl.from(".gsap-header", {
                 y: -50,
                 opacity: 0,
@@ -323,6 +340,13 @@
                 duration: 0.8,
                 stagger: 0.04, // Stagger each letter
                 ease: "power2.out"
+            }, "-=0.5");
+
+            // Animate mobile socials along with arrow
+            tl.from(".gsap-socials-mobile", {
+                opacity: 0,
+                y: 10,
+                duration: 0.8
             }, "-=0.5");
 
             // Changed from 'from' to 'to' to properly handle the inline style opacity: 0
