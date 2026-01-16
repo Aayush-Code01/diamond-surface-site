@@ -92,7 +92,7 @@
             height: 100vh;
             position: sticky; /* Make hero sticky */
             top: 0;          /* Stays at top */
-            z-index: 0;      /* Behind the glass section */
+            z-index: 5;      /* Increased z-index so it sits ABOVE the video (z-0) but BELOW glass section (z-20) */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -112,8 +112,8 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Ensure this file exists in assets/ -->
-        <video autoplay muted loop playsinline class="video-bg">
+        <!-- added preload="auto" to prioritize video loading -->
+        <video autoplay muted loop playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
