@@ -18,11 +18,9 @@
     <meta property="og:description" content="Watch this space for updates on our latest products..">
     
     <!-- FIX: Enhanced Image Tags for WhatsApp -->
-    <!-- Added ?v=1 to force cache refresh -->
     <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:type" content="image/png">
-    <!-- Recommended dimensions for social images -->
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -75,6 +73,7 @@
             height: 100vh;
             z-index: 0;
             overflow: hidden;
+            background-color: #000; /* Ensure black background if video delays */
         }
 
         .video-bg {
@@ -140,8 +139,8 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Added webkit-playsinline for older iOS -->
-        <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/social-image.png" class="video-bg">
+        <!-- Removed 'poster' attribute to prevent showing the social image -->
+        <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -291,7 +290,6 @@
                     video.defaultMuted = true;
                     video.play().then(() => {
                         console.log("Video started via interaction fallback");
-                        // Remove listener once successful
                         document.removeEventListener('touchstart', startVideo);
                         document.removeEventListener('click', startVideo);
                     }).catch(e => console.log("Still blocked", e));
@@ -311,7 +309,6 @@
                 });
             }
 
-            // Helper to split text into characters without creating layout shifts
             const splitTextToChars = (elements) => {
                 elements.forEach(el => {
                     const text = el.textContent;
