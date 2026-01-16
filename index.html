@@ -124,7 +124,7 @@
     <div class="scroll-content">
         
         <!-- Hero Section -->
-        <section class="hero-section w-full px-6 py-6 md:px-12 md:py-8">
+        <section class="hero-section w-full px-6 py-6 md:px-12 md:py-8 relative">
             
             <!-- Header -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
@@ -148,7 +148,7 @@
             </header>
 
             <!-- Center Content -->
-            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative">
+            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative z-10">
                 
                 <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 md:mb-12">
                     <!-- Left Logo (Made Taller/Larger): w-40 -> w-60 -> w-72 -->
@@ -170,8 +170,12 @@
                     <span class="gsap-char-reveal block md:inline">is coming soon</span>
                 </h1>
                 
-                <!-- Arrow updated with higher z-index and explicit positioning -->
-                <a href="#contact" class="gsap-arrow absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity z-50">
+            </div>
+
+            <!-- Arrow Moved OUTSIDE flex container and anchored to bottom of hero section -->
+            <div class="absolute bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
+                <!-- Added inline style opacity: 0 to prevent FOUC (Flash of Unstyled Content) -->
+                <a href="#contact" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
                 </a>
             </div>
@@ -289,10 +293,16 @@
                 ease: "power2.out"
             }, "-=0.5");
 
-            tl.from(".gsap-arrow", {
-                opacity: 0,
+            // Changed from 'from' to 'to' to properly handle the inline style opacity: 0
+            // This prevents the arrow from flashing on load
+            tl.to(".gsap-arrow", {
+                opacity: 0.7,
                 duration: 1,
-                delay: 0.5
+                delay: 0.5,
+                onComplete: () => {
+                    // Remove inline opacity so CSS hover effects work again
+                    gsap.set(".gsap-arrow", { clearProps: "opacity" });
+                }
             });
             
             // Simplified parallax
