@@ -26,6 +26,10 @@
             font-style: normal;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             /* Prefer the local file, fall back to Google Font CDN */
             font-family: 'Space Grotesk Custom', 'Space Grotesk', sans-serif;
@@ -121,8 +125,9 @@
             
             <!-- Header -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
-                <div class="logo-container w-40 md:w-48">
-                    <!-- Ensure this file is .svg in your assets folder -->
+                <!-- Header logo size increased: w-48 (mobile), w-64 (desktop) -->
+                <div class="logo-container w-48 md:w-64">
+                    <!-- Header logo is PNG -->
                     <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain">
                 </div>
 
@@ -143,11 +148,13 @@
             <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0">
                 
                 <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 md:mb-12">
-                    <div class="gsap-center-logo w-32 md:w-48 lg:w-56 h-auto">
+                    <!-- Left Logo (Made Taller/Larger): w-40 -> w-60 -> w-72 -->
+                    <div class="gsap-center-logo w-40 md:w-60 lg:w-72 h-auto">
                         <!-- Switched to SVG -->
                         <img src="assets/logo-center-1.svg" alt="Feature Logo 1" class="w-full h-full object-contain">
                     </div>
                     
+                    <!-- Right Logo (Kept standard size) -->
                     <div class="gsap-center-logo w-32 md:w-48 lg:w-56 h-auto">
                         <!-- Switched to SVG -->
                         <img src="assets/logo-center-2.svg" alt="Feature Logo 2" class="w-full h-full object-contain">
@@ -159,15 +166,16 @@
                     <span class="block md:inline">is coming soon</span>
                 </h1>
                 
-                <div class="gsap-arrow absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70">
+                <!-- Arrow updated to Anchor tag linking to #contact -->
+                <a href="#contact" class="gsap-arrow absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-                </div>
+                </a>
             </div>
 
         </section>
 
-        <!-- Glass Effect Contact Section -->
-        <section class="glass-section w-full min-h-[60vh] flex flex-col justify-center items-center py-20 px-6 text-center">
+        <!-- Glass Effect Contact Section - Added ID and min-h-screen -->
+        <section id="contact" class="glass-section w-full min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center">
             
             <div class="max-w-3xl mx-auto space-y-12">
                 
