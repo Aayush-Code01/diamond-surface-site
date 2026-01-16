@@ -86,6 +86,13 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
+            /* Hide the video element initially to prevent play icon flash */
+            opacity: 0; 
+            transition: opacity 0.5s ease-in;
+        }
+
+        .video-bg.loaded {
+            opacity: 1; /* Fade in only when playing */
         }
 
         /* HIDE VIDEO CONTROLS FORCEFULLY */
@@ -101,6 +108,17 @@
         }
         video::-webkit-media-controls-overlay-play-button {
             display: none !important;
+        }
+
+        /* SHIELD: Invisible div to block all touch events on video (prevents native controls showing up) */
+        .video-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Sits on top of video */
+            background: transparent;
         }
 
         .video-overlay {
@@ -155,6 +173,9 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
+        <!-- Shield to block touches -->
+        <div class="video-shield"></div>
+        
         <!-- Force Autoplay: muted, playsinline, and webkit-playsinline are key -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
@@ -294,12 +315,21 @@
             // Force Video Autoplay Logic with Fallback
             const video = document.getElementById("bg-video");
             
+            // Function to handle video state changes
+            const checkVideoState = () => {
+                if (!video.paused && !video.ended && video.readyState > 2) {
+                    // Video is actually playing
+                    video.classList.add('loaded'); // This triggers the CSS fade-in
+                }
+            };
+
             const startVideo = () => {
                 if(video.paused) {
                     video.muted = true;
                     video.defaultMuted = true;
                     video.play().then(() => {
                         console.log("Video started via interaction fallback");
+                        checkVideoState();
                         document.removeEventListener('touchstart', startVideo);
                         document.removeEventListener('click', startVideo);
                     }).catch(e => console.log("Still blocked", e));
@@ -309,7 +339,11 @@
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                // Force play on load
+                
+                // Add event listener to fade in only when playing starts
+                video.addEventListener('playing', checkVideoState);
+                
+                // Attempt 1: Automatic
                 video.play().catch(error => {
                     console.log("Autoplay blocked, waiting for interaction...");
                     document.addEventListener('touchstart', startVideo, { once: true });
