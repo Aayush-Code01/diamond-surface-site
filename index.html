@@ -11,13 +11,11 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
 
-    <!-- Open Graph / Facebook (WhatsApp uses these) -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://diamondsurface.co/">
     <meta property="og:title" content="Diamond Surface - Coming Soon">
     <meta property="og:description" content="Watch this space for updates on our latest products..">
-    
-    <!-- FIX: Enhanced Image Tags for WhatsApp -->
     <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:type" content="image/png">
@@ -57,7 +55,6 @@
         }
 
         body {
-            /* Prefer the local file, fall back to Google Font CDN */
             font-family: 'Space Grotesk Custom', 'Space Grotesk', sans-serif;
             background-color: #000;
             color: #fff;
@@ -73,7 +70,7 @@
             height: 100vh;
             z-index: 0;
             overflow: hidden;
-            background-color: #000; /* Ensure black background if video delays */
+            background-color: #000;
         }
 
         .video-bg {
@@ -86,31 +83,16 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Hide the video element initially to prevent play icon flash */
-            opacity: 0; 
-            transition: opacity 0.5s ease-in;
-        }
-
-        .video-bg.loaded {
-            opacity: 1; /* Fade in only when playing */
+            /* Removed opacity:0 to ensure immediate visibility */
         }
 
         /* HIDE VIDEO CONTROLS FORCEFULLY */
-        video::-webkit-media-controls {
-            display: none !important;
-        }
-        video::-webkit-media-controls-start-playback-button {
-            display: none !important;
-            -webkit-appearance: none;
-        }
-        video::-webkit-media-controls-play-button {
-            display: none !important;
-        }
-        video::-webkit-media-controls-overlay-play-button {
-            display: none !important;
-        }
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+        video::-webkit-media-controls-play-button { display: none !important; }
+        video::-webkit-media-controls-overlay-play-button { display: none !important; }
 
-        /* SHIELD: Invisible div to block all touch events on video (prevents native controls showing up) */
+        /* SHIELD: Invisible div to block all touch events on video */
         .video-shield {
             position: absolute;
             top: 0;
@@ -129,17 +111,17 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 1;
-            pointer-events: none; /* Let clicks pass through to video/body */
+            pointer-events: none;
         }
 
         /* Glassmorphism Section */
         .glass-section {
-            background: rgba(0, 0, 0, 0.4); /* Reduced opacity for better glass effect */
-            backdrop-filter: blur(20px); /* Increased blur */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            z-index: 20; /* Higher z-index to scroll OVER the sticky hero */
+            z-index: 20;
             box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
 
@@ -151,9 +133,9 @@
 
         .hero-section {
             height: 100vh;
-            position: sticky; /* Make hero sticky */
-            top: 0;          /* Stays at top */
-            z-index: 5;      /* Increased z-index so it sits ABOVE the video (z-0) but BELOW glass section (z-20) */
+            position: sticky;
+            top: 0;
+            z-index: 5;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -173,10 +155,10 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Shield to block touches -->
+        <!-- Shield to block touches/icons -->
         <div class="video-shield"></div>
         
-        <!-- Force Autoplay: muted, playsinline, and webkit-playsinline are key -->
+        <!-- Force Autoplay settings -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -229,6 +211,7 @@
                 
             </div>
 
+            <!-- Mobile Social Icons -->
             <div class="gsap-socials-mobile absolute bottom-40 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
                 <a href="#" class="social-icon" aria-label="Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -241,6 +224,7 @@
                 </a>
             </div>
 
+            <!-- Arrow -->
             <div class="absolute bottom-24 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
                 <a href="#contact" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
@@ -315,21 +299,12 @@
             // Force Video Autoplay Logic with Fallback
             const video = document.getElementById("bg-video");
             
-            // Function to handle video state changes
-            const checkVideoState = () => {
-                if (!video.paused && !video.ended && video.readyState > 2) {
-                    // Video is actually playing
-                    video.classList.add('loaded'); // This triggers the CSS fade-in
-                }
-            };
-
             const startVideo = () => {
                 if(video.paused) {
                     video.muted = true;
                     video.defaultMuted = true;
                     video.play().then(() => {
                         console.log("Video started via interaction fallback");
-                        checkVideoState();
                         document.removeEventListener('touchstart', startVideo);
                         document.removeEventListener('click', startVideo);
                     }).catch(e => console.log("Still blocked", e));
@@ -339,11 +314,7 @@
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                
-                // Add event listener to fade in only when playing starts
-                video.addEventListener('playing', checkVideoState);
-                
-                // Attempt 1: Automatic
+                // Force play immediately (don't wait for DOM to fully finish if possible)
                 video.play().catch(error => {
                     console.log("Autoplay blocked, waiting for interaction...");
                     document.addEventListener('touchstart', startVideo, { once: true });
