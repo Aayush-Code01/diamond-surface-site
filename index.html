@@ -203,7 +203,8 @@
             </div>
 
             <!-- Mobile Social Icons Container: Visible only on mobile (md:hidden), positioned above arrow -->
-            <div class="gsap-socials-mobile absolute bottom-28 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
+            <!-- Adjusted bottom spacing to bottom-40 to clear the raised arrow on mobile -->
+            <div class="gsap-socials-mobile absolute bottom-40 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
                 <a href="#" class="social-icon" aria-label="Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
@@ -216,7 +217,8 @@
             </div>
 
             <!-- Arrow Moved OUTSIDE flex container and anchored to bottom of hero section -->
-            <div class="absolute bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
+            <!-- Adjusted bottom spacing: bottom-24 on mobile, bottom-10 on desktop -->
+            <div class="absolute bottom-24 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
                 <!-- Added inline style opacity: 0 to prevent FOUC (Flash of Unstyled Content) -->
                 <a href="#contact" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
