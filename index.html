@@ -232,22 +232,34 @@
         <!-- Product Collections Section -->
         <section id="collections" class="w-full min-h-screen pb-20 bg-slate-50 pt-10">
             
-            <div class="max-w-7xl mx-auto px-4 md:px-12 mb-8 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between">
-                <div>
-                    <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-2">The Catalog</h2>
-                    <p class="text-[#D98835] uppercase tracking-widest text-sm font-bold" id="product-count">Loading...</p>
-                </div>
-                <h3 class="text-lg font-bold text-[#138A8E] mt-4 md:mt-0 uppercase tracking-widest hidden md:block" id="current-category-title">All Collections</h3>
-            </div>
+            <!-- Sticky Filter Navigation Bar (Categories + Subcategories/Finishes) -->
+            <div class="sticky top-[73px] z-40 bg-[#fdfbf7] border-y border-slate-200 shadow-md transition-all duration-300">
+                <div class="max-w-7xl mx-auto px-4 md:px-12 py-6 flex flex-col gap-6">
+                    
+                    <!-- Top Row: Title & Main Categories -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+                        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight shrink-0" id="current-category-title-large">All Collections</h2>
+                        <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-2 lg:pb-0 w-full lg:w-auto" id="main-cat-pills">
+                            <!-- Pills injected via JS -->
+                        </div>
+                    </div>
 
-            <!-- Sticky Filter Navigation Bar (Subcategories/Finishes Only) -->
-            <div class="sticky top-[73px] z-40 bg-white border-y border-slate-200 shadow-sm transition-all duration-300">
-                <div class="max-w-7xl mx-auto px-4 md:px-12">
-                    <!-- Bottom Row: Subcategory / Finish Tabs -->
-                    <div class="py-3 overflow-x-auto hide-scrollbar">
-                        <nav class="flex items-center gap-3 text-sm font-medium whitespace-nowrap" id="finish-cat-nav">
-                            <!-- Injected via JS -->
-                        </nav>
+                    <!-- Bottom Row: Subcategory (Size & Finish) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
+                        <!-- Size -->
+                        <div class="flex flex-col gap-3 md:border-r md:border-slate-300 md:pr-12">
+                            <h4 class="text-lg font-bold text-slate-900">Choose By Size</h4>
+                            <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-2 md:pb-0" id="size-cat-nav">
+                                <!-- Pills injected via JS -->
+                            </div>
+                        </div>
+                        <!-- Finish -->
+                        <div class="flex flex-col gap-3">
+                            <h4 class="text-lg font-bold text-slate-900">Choose By Finish</h4>
+                            <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-2 md:pb-0" id="finish-cat-nav">
+                                <!-- Pills injected via JS -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -421,8 +433,10 @@
         let productsData = [];
         let categories = ["All"];
         let currentCategory = "All";
-        let finishes = ["All Finishes"];
-        let currentFinish = "All Finishes";
+        let sizes = ["All"];
+        let currentSize = "All";
+        let finishes = ["All"];
+        let currentFinish = "All";
         
         // Cart State
         let inquiryCart = []; 
@@ -435,10 +449,11 @@
         // Navigation elements
         const desktopNav = document.getElementById('desktop-cat-nav');
         const mobileNav = document.getElementById('mobile-cat-nav');
+        const mainCatPills = document.getElementById('main-cat-pills');
+        const sizeNav = document.getElementById('size-cat-nav');
         const finishNav = document.getElementById('finish-cat-nav');
         const productGrid = document.getElementById('product-grid');
-        const currentCategoryTitle = document.getElementById('current-category-title');
-        const productCountLabel = document.getElementById('product-count');
+        const currentCategoryTitleLarge = document.getElementById('current-category-title-large');
         const mobileMenuDropdown = document.getElementById('mobile-dropdown');
 
         function toggleMobileMenu() {
@@ -452,6 +467,7 @@
         function renderNav() {
             desktopNav.innerHTML = '';
             mobileNav.innerHTML = '';
+            if (mainCatPills) mainCatPills.innerHTML = '';
             
             categories.forEach(cat => {
                 // Desktop Link inside Sticky Bar
@@ -469,16 +485,50 @@
                 aMobile.innerText = cat;
                 aMobile.onclick = (e) => { e.preventDefault(); setCategory(cat); closeMobileMenu(); };
                 mobileNav.appendChild(aMobile);
+
+                // Main Category Pills (Catalog section)
+                if (mainCatPills) {
+                    const btnMain = document.createElement('button');
+                    btnMain.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentCategory === cat ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
+                    btnMain.innerText = cat;
+                    btnMain.onclick = () => setCategory(cat);
+                    mainCatPills.appendChild(btnMain);
+                }
             });
             
-            if(currentCategoryTitle) {
-                currentCategoryTitle.innerText = currentCategory === "All" ? "All Collections" : currentCategory;
+            if(currentCategoryTitleLarge) {
+                currentCategoryTitleLarge.innerText = currentCategory === "All" ? "All Collections" : currentCategory;
             }
             
+            renderSizeNav();
             renderFinishNav();
         }
 
+        function renderSizeNav() {
+            if (!sizeNav) return;
+            sizeNav.innerHTML = '';
+            
+            const availableProducts = currentCategory === "All" 
+                ? productsData 
+                : productsData.filter(p => p.category === currentCategory);
+                
+            sizes = ["All", ...new Set(availableProducts.map(p => p.size).filter(s => s))];
+            
+            if (!sizes.includes(currentSize)) {
+                currentSize = "All";
+            }
+
+            sizes.forEach(size => {
+                const btn = document.createElement('button');
+                btn.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentSize === size ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
+                btn.innerText = size;
+                btn.onclick = () => setSize(size);
+                sizeNav.appendChild(btn);
+            });
+        }
+
         function renderFinishNav() {
+            if (!finishNav) return;
             finishNav.innerHTML = '';
             
             // Extract available finishes for current category
@@ -486,16 +536,16 @@
                 ? productsData 
                 : productsData.filter(p => p.category === currentCategory);
                 
-            finishes = ["All Finishes", ...new Set(availableProducts.map(p => p.finish).filter(f => f))];
+            finishes = ["All", ...new Set(availableProducts.map(p => p.finish).filter(f => f))];
             
             // If current finish is no longer available in this category, reset to All
             if (!finishes.includes(currentFinish)) {
-                currentFinish = "All Finishes";
+                currentFinish = "All";
             }
 
             finishes.forEach(fin => {
                 const btn = document.createElement('button');
-                btn.className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition uppercase border ${currentFinish === fin ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-white text-slate-500 border-slate-300 hover:border-slate-500 hover:text-[#138A8E]'}`;
+                btn.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentFinish === fin ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
                 btn.innerText = fin;
                 btn.onclick = () => setFinish(fin);
                 finishNav.appendChild(btn);
@@ -505,15 +555,17 @@
         function renderProducts() {
             productGrid.innerHTML = '';
             
-            let filteredProducts = currentCategory === "All" 
-                ? productsData 
-                : productsData.filter(p => p.category === currentCategory);
-
-            if (currentFinish !== "All Finishes") {
+            let filteredProducts = productsData;
+            
+            if (currentCategory !== "All") {
+                filteredProducts = filteredProducts.filter(p => p.category === currentCategory);
+            }
+            if (currentSize !== "All") {
+                filteredProducts = filteredProducts.filter(p => p.size === currentSize);
+            }
+            if (currentFinish !== "All") {
                 filteredProducts = filteredProducts.filter(p => p.finish === currentFinish);
             }
-
-            productCountLabel.innerText = `${filteredProducts.length} Product${filteredProducts.length !== 1 ? 's' : ''}`;
 
             filteredProducts.forEach((product) => {
                 const isSelected = inquiryCart.some(item => item.id === product.id);
@@ -558,8 +610,16 @@
 
         function setCategory(cat) {
             currentCategory = cat;
-            currentFinish = "All Finishes"; // Reset finish on category change
+            currentSize = "All";
+            currentFinish = "All";
             renderNav();
+            renderProducts();
+            scrollToCollections();
+        }
+
+        function setSize(size) {
+            currentSize = size;
+            renderSizeNav();
             renderProducts();
             scrollToCollections();
         }
