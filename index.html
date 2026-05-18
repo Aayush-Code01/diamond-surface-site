@@ -56,8 +56,8 @@
 
         body {
             font-family: 'Space Grotesk Custom', 'Space Grotesk', sans-serif;
-            background-color: #000;
-            color: #fff;
+            background-color: #f8fafc; /* Day theme background */
+            color: #0f172a; /* Day theme text */
             overflow-x: hidden;
         }
 
@@ -70,7 +70,7 @@
             height: 100vh;
             z-index: 0;
             overflow: hidden;
-            background-color: #000;
+            background-color: #f8fafc;
         }
 
         .video-bg {
@@ -97,7 +97,6 @@
             opacity: 0 !important;
         }
 
-        /* SHIELD: Invisible div to block all touch events on video */
         .video-shield {
             position: absolute;
             top: 0;
@@ -108,29 +107,29 @@
             background: transparent;
         }
 
+        /* Day Theme Light Video Overlay */
         .video-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.75);
             z-index: 1;
             pointer-events: none;
         }
 
-        /* Glassmorphism Sections */
+        /* Light Glassmorphism Sections */
         .glass-section {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
             position: relative;
             z-index: 20;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
         }
 
-        /* Scroll Interaction Wrapper */
         .scroll-content {
             position: relative;
             z-index: 10;
@@ -146,36 +145,42 @@
             justify-content: space-between;
         }
 
-        /* Social Icons & Nav Hover Effect */
+        /* Invert Logos for Day Theme */
+        .logo-invert {
+            filter: invert(1) brightness(0);
+        }
+
+        /* Interactions */
         .social-icon, .nav-link {
             transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
         }
         .social-icon:hover {
             transform: translateY(-3px);
-            opacity: 0.8;
+            opacity: 0.7;
         }
         .nav-link:hover, .nav-link.active {
-            color: #fff;
+            color: #0f172a;
             opacity: 1;
         }
         .nav-link {
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
-        /* Product Cards */
+        /* Day Theme Product Cards */
         .product-card {
             transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.15);
         }
         .product-image-container {
             overflow: hidden;
-            aspect-ratio: 2 / 3; /* Matches typical slab proportions visually */
+            aspect-ratio: 2 / 3; 
         }
         .product-image {
             transition: transform 0.6s ease;
@@ -184,19 +189,19 @@
             transform: scale(1.05);
         }
 
-        /* Custom Scrollbar */
+        /* Custom Scrollbar (Light Theme) */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0a0a; 
+            background: #f1f5f9; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #333; 
+            background: #cbd5e1; 
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #555; 
+            background: #94a3b8; 
         }
 
         /* Modal Transitions */
@@ -216,14 +221,10 @@
         #product-modal.active .modal-content {
             transform: translateY(0);
         }
-        
-        /* Hide scrollbar for category pills on mobile */
-        .hide-scroll::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scroll {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        /* Sticky Dropdown Utility */
+        .dropdown-open {
+            display: block !important;
         }
     </style>
 </head>
@@ -244,38 +245,33 @@
         <!-- Hero Section -->
         <section class="hero-section w-full px-6 py-6 md:px-12 md:py-8 relative">
             
-            <!-- Header (Updated with Categories) -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
                 <div class="logo-container w-48 md:w-64">
-                    <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
+                    <!-- Added logo-invert to flip white logos to dark for day theme -->
+                    <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="logo-invert w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
 
-                <!-- Desktop Category Nav -->
-                <nav class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-widest uppercase" id="header-nav">
-                    <!-- Nav items injected via JS -->
-                </nav>
-
                 <div class="socials hidden md:flex items-center gap-6">
-                    <a href="#" class="social-icon" aria-label="Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    <a href="#" class="social-icon text-slate-900" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="#" class="social-icon" aria-label="Facebook">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    <a href="#" class="social-icon text-slate-900" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="#" class="social-icon" aria-label="TikTok">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                    <a href="#" class="social-icon text-slate-900" aria-label="TikTok">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
                     </a>
                 </div>
             </header>
 
             <!-- Center Content -->
-            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative z-10">
+            <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative z-10 text-slate-900">
                 <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 md:mb-12">
                     <div class="gsap-center-logo w-40 md:w-60 lg:w-72 h-auto">
-                        <img src="assets/logo-center-1.svg" alt="" class="w-full h-full object-contain">
+                        <img src="assets/logo-center-1.svg" alt="" class="logo-invert w-full h-full object-contain">
                     </div>
                     <div class="gsap-center-logo w-24 md:w-36 lg:w-40 h-auto">
-                        <img src="assets/logo-center-2.svg" alt="" class="w-full h-full object-contain">
+                        <img src="assets/logo-center-2.svg" alt="" class="logo-invert w-full h-full object-contain">
                     </div>
                 </div>
 
@@ -287,92 +283,107 @@
 
             <!-- Mobile Social Icons -->
             <div class="gsap-socials-mobile absolute bottom-40 left-1/2 transform -translate-x-1/2 flex md:hidden items-center gap-6 z-20">
-                <a href="#" class="social-icon" aria-label="Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                <a href="#" class="social-icon text-slate-900" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="#" class="social-icon" aria-label="Facebook">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                <a href="#" class="social-icon text-slate-900" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
             </div>
 
             <!-- Arrow -->
             <div class="absolute bottom-24 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
-                <a href="#collections" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
+                <a href="#collections" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-slate-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
                 </a>
             </div>
         </section>
 
-        <!-- Product Collections Section (NEW) -->
-        <section id="collections" class="glass-section w-full min-h-screen py-20 px-4 md:px-12">
-            <div class="max-w-7xl mx-auto">
-                
-                <!-- Section Header -->
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-white/10 pb-6 gap-6">
-                    <div>
-                        <h2 class="text-3xl md:text-5xl font-light mb-2" id="current-category-title">All Collections</h2>
-                        <p class="text-gray-400 text-sm md:text-base uppercase tracking-widest" id="product-count">Loading...</p>
+        <!-- Product Collections Section -->
+        <section id="collections" class="glass-section w-full min-h-screen pb-20">
+            
+            <!-- Sticky Category Navigation Bar -->
+            <div class="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-black/10 shadow-sm transition-all duration-300">
+                <div class="max-w-7xl mx-auto px-4 md:px-12 py-4 flex justify-between items-center relative">
+                    
+                    <div class="flex items-baseline gap-4">
+                        <h2 class="text-xl md:text-2xl font-semibold" id="current-category-title">All Collections</h2>
+                        <span class="text-slate-500 text-xs md:text-sm uppercase tracking-widest hidden md:inline" id="product-count">Loading...</span>
                     </div>
 
-                    <!-- Mobile/Tablet Category Pills -->
-                    <div class="flex md:hidden overflow-x-auto hide-scroll gap-3 pb-2 w-full" id="mobile-category-nav">
+                    <!-- Desktop Category Nav -->
+                    <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-widest uppercase" id="desktop-cat-nav">
                         <!-- Injected via JS -->
-                    </div>
+                    </nav>
+
+                    <!-- Mobile Hamburger Toggle -->
+                    <button class="lg:hidden flex items-center gap-2 text-slate-900 hover:text-slate-600 transition" onclick="toggleMobileMenu()">
+                        <span class="text-sm font-semibold uppercase tracking-widest" id="mobile-menu-label">Categories</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
                 </div>
 
-                <!-- Dynamic Product Grid (2 cols mobile, 3 cols desktop) -->
+                <!-- Mobile Dropdown Menu -->
+                <div id="mobile-dropdown" class="hidden lg:hidden bg-white border-t border-black/10 absolute w-full left-0 top-full shadow-lg">
+                    <nav class="flex flex-col py-2 max-h-[50vh] overflow-y-auto" id="mobile-cat-nav">
+                        <!-- Injected via JS -->
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div class="max-w-7xl mx-auto px-4 md:px-12 pt-8">
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12" id="product-grid">
                     <!-- Products injected via JS -->
                 </div>
-
             </div>
+            
         </section>
 
-        <!-- Glass Effect Contact Section (PRESERVED) -->
-        <section id="contact" class="glass-section w-full flex flex-col justify-center items-center py-20 px-6 text-center border-t border-white/5">
+        <!-- Glass Effect Contact Section -->
+        <section id="contact" class="glass-section w-full flex flex-col justify-center items-center py-20 px-6 text-center border-t border-black/10">
             <div class="max-w-3xl mx-auto space-y-12">
                 <div class="space-y-4">
-                    <h2 class="text-2xl md:text-4xl font-bold mb-6">Get in Touch</h2>
-                    <p class="text-gray-300 text-base md:text-xl font-light leading-relaxed">
+                    <h2 class="text-2xl md:text-4xl font-bold mb-6 text-slate-900">Get in Touch</h2>
+                    <p class="text-slate-600 text-base md:text-xl font-light leading-relaxed">
                         We are crafting something extraordinary for you. 
                         Feel free to reach out to us directly for any inquiries.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-12 text-slate-800">
                     <div class="flex flex-col items-center group cursor-pointer" onclick="document.execCommand('copy')">
-                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
+                        <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center mb-4 group-hover:bg-slate-300 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         </div>
-                        <h3 class="text-sm font-semibold tracking-wider uppercase text-gray-400 mb-1">Email</h3>
-                        <a href="mailto:info@diamondsurface.co" class="text-base md:text-xl hover:text-gray-300 transition-colors">info@diamondsurface.co</a>
+                        <h3 class="text-sm font-semibold tracking-wider uppercase text-slate-500 mb-1">Email</h3>
+                        <a href="mailto:info@diamondsurface.co" class="text-base md:text-xl hover:text-slate-600 transition-colors">info@diamondsurface.co</a>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </div>
-                        <h3 class="text-sm font-semibold tracking-wider uppercase text-gray-400 mb-1">Phone</h3>
+                        <h3 class="text-sm font-semibold tracking-wider uppercase text-slate-500 mb-1">Phone</h3>
                         <p class="text-base md:text-xl">07755554292 - 07855554292</p>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         </div>
-                        <h3 class="text-sm font-semibold tracking-wider uppercase text-gray-400 mb-1">Office</h3>
+                        <h3 class="text-sm font-semibold tracking-wider uppercase text-slate-500 mb-1">Office</h3>
                         <p class="text-base md:text-xl">بغداد، الكراده خارج قرب ساحه التحريات</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Back to Top Arrow -->
-            <div class="mt-16 mb-4 animate-bounce opacity-70 hover:opacity-100 transition-opacity cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="mt-16 mb-4 animate-bounce opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-slate-900" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-180"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
 
-            <footer class="pt-4 border-t border-white/10 w-full max-w-6xl mt-8">
-                <p class="text-sm text-gray-400">
+            <footer class="pt-4 border-t border-black/10 w-full max-w-6xl mt-8">
+                <p class="text-sm text-slate-500">
                     &copy; 2026 Diamond Surface. All rights reserved.
                 </p>
             </footer>
@@ -381,52 +392,54 @@
     </div>
 
     <!-- Product Inquiry Modal -->
-    <div id="product-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+    <!-- Added fixed padding and strictly constrained modal container height -->
+    <div id="product-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md">
         <!-- Close Overlay -->
         <div class="absolute inset-0 cursor-pointer" onclick="closeModal()"></div>
         
-        <!-- Modal Content -->
-        <div class="modal-content relative w-full max-w-4xl bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+        <!-- Modal Content (Bounded to max-h-[90vh] with overflow handling) -->
+        <div class="modal-content relative w-full max-w-4xl bg-white border border-black/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
             
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition backdrop-blur-md">
+            <!-- Close Button (Always visible on top of content) -->
+            <button onclick="closeModal()" class="absolute top-3 right-3 z-[60] w-10 h-10 bg-slate-100/90 hover:bg-slate-200 text-slate-900 rounded-full flex items-center justify-center transition shadow-sm backdrop-blur-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
             <!-- Image Side -->
-            <div class="w-full md:w-1/2 h-64 md:h-auto bg-zinc-800 relative">
+            <div class="w-full md:w-1/2 h-48 md:h-auto bg-slate-100 relative shrink-0">
                 <img id="modal-image" src="" alt="Product" class="w-full h-full object-cover">
             </div>
 
-            <!-- Details Side -->
-            <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-                <p id="modal-category" class="text-sm text-gray-400 tracking-widest uppercase mb-2"></p>
-                <h3 id="modal-title" class="text-2xl md:text-4xl font-light mb-6"></h3>
+            <!-- Details Side (Scrollable area) -->
+            <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-start overflow-y-auto pt-14 md:pt-10">
+                <p id="modal-category" class="text-sm text-slate-500 tracking-widest uppercase mb-1"></p>
+                <h3 id="modal-title" class="text-2xl md:text-4xl font-light mb-6 text-slate-900"></h3>
                 
-                <div class="space-y-4 mb-8">
-                    <div class="flex justify-between border-b border-white/10 pb-2">
-                        <span class="text-gray-400">Size & Thickness</span>
+                <div class="space-y-4 mb-8 text-slate-700">
+                    <div class="flex justify-between border-b border-black/5 pb-2">
+                        <span class="text-slate-500">Size & Thickness</span>
                         <span id="modal-size" class="font-medium text-right"></span>
                     </div>
-                    <div class="flex justify-between border-b border-white/10 pb-2">
-                        <span class="text-gray-400">Finish</span>
+                    <div class="flex justify-between border-b border-black/5 pb-2">
+                        <span class="text-slate-500">Finish</span>
                         <span id="modal-finish" class="font-medium text-right"></span>
                     </div>
-                    <div class="flex justify-between border-b border-white/10 pb-2">
-                        <span class="text-gray-400">Subcategory</span>
+                    <div class="flex justify-between border-b border-black/5 pb-2">
+                        <span class="text-slate-500">Subcategory</span>
                         <span id="modal-sub" class="font-medium text-right"></span>
                     </div>
                 </div>
 
-                <div class="space-y-3">
-                    <a id="modal-whatsapp-1" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white py-3 px-6 rounded-lg font-medium transition">
+                <div class="space-y-3 mt-auto pb-2">
+                    <a id="modal-whatsapp-1" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         WhatsApp (07755554292)
                     </a>
-                    <a id="modal-whatsapp-2" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white py-3 px-6 rounded-lg font-medium transition">
+                    <a id="modal-whatsapp-2" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         WhatsApp (07855554292)
                     </a>
-                    <a id="modal-email" href="#" class="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white py-3 px-6 rounded-lg font-medium transition border border-white/10">
+                    <a id="modal-email" href="#" class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 py-3 px-6 rounded-lg font-medium transition border border-black/5 shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         Send an Email
                     </a>
@@ -459,41 +472,49 @@
             { category: "GVT Collection", size: "800 X 1600 MM", thickness: "", name: "2709 GLOSSY", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-84123981753686637.jpg" }
         ];
 
-        const INQUIRY_PHONE_1 = "9647755554292"; // WhatsApp format requires country code +964
-        const INQUIRY_PHONE_2 = "9647855554292"; // WhatsApp format requires country code +964
+        const INQUIRY_PHONE_1 = "9647755554292"; 
+        const INQUIRY_PHONE_2 = "9647855554292"; 
         const INQUIRY_EMAIL = "info@diamondsurface.co";
 
-        // Extract unique categories
         const categories = ["All", ...new Set(productsData.map(p => p.category))];
         let currentCategory = "All";
 
-        // Initialize DOM Elements
-        const headerNav = document.getElementById('header-nav');
-        const mobileNav = document.getElementById('mobile-category-nav');
+        // Navigation elements
+        const desktopNav = document.getElementById('desktop-cat-nav');
+        const mobileNav = document.getElementById('mobile-cat-nav');
         const productGrid = document.getElementById('product-grid');
         const currentCategoryTitle = document.getElementById('current-category-title');
         const productCountLabel = document.getElementById('product-count');
+        const mobileMenuDropdown = document.getElementById('mobile-dropdown');
 
-        // Functions
+        function toggleMobileMenu() {
+            mobileMenuDropdown.classList.toggle('dropdown-open');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuDropdown.classList.remove('dropdown-open');
+        }
+
         function renderNav() {
-            headerNav.innerHTML = '';
+            desktopNav.innerHTML = '';
             mobileNav.innerHTML = '';
             
             categories.forEach(cat => {
-                // Desktop Link
+                // Desktop Link inside Sticky Bar
                 const aDesk = document.createElement('a');
                 aDesk.href = "#collections";
-                aDesk.className = `nav-link cursor-pointer ${currentCategory === cat ? 'active text-white' : ''}`;
+                aDesk.className = `nav-link cursor-pointer transition ${currentCategory === cat ? 'active text-slate-900 border-b-2 border-slate-900' : 'text-slate-500 hover:text-slate-800 border-b-2 border-transparent'}`;
                 aDesk.innerText = cat;
                 aDesk.onclick = (e) => { e.preventDefault(); setCategory(cat); };
-                headerNav.appendChild(aDesk);
+                desktopNav.appendChild(aDesk);
 
-                // Mobile Pill
-                const btnMobile = document.createElement('button');
-                btnMobile.className = `whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${currentCategory === cat ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`;
-                btnMobile.innerText = cat;
-                btnMobile.onclick = () => setCategory(cat);
-                mobileNav.appendChild(btnMobile);
+                // Mobile Dropdown Item
+                const aMobile = document.createElement('a');
+                aMobile.href = "#collections";
+                aMobile.className = `block px-6 py-4 border-b border-black/5 text-sm font-semibold tracking-widest uppercase transition ${currentCategory === cat ? 'bg-slate-50 text-slate-900' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`;
+                aMobile.innerText = cat;
+                aMobile.onclick = (e) => { e.preventDefault(); setCategory(cat); closeMobileMenu(); };
+                mobileNav.appendChild(aMobile);
             });
         }
 
@@ -506,28 +527,26 @@
             currentCategoryTitle.innerText = currentCategory === "All" ? "All Collections" : currentCategory;
             productCountLabel.innerText = `${filteredProducts.length} Product${filteredProducts.length !== 1 ? 's' : ''}`;
 
-            filteredProducts.forEach((product, index) => {
-                // Format size with thickness if available
+            filteredProducts.forEach((product) => {
                 const displaySize = product.thickness ? `${product.size}-${product.thickness}` : product.size;
 
                 const card = document.createElement('div');
                 card.className = "product-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full";
                 card.onclick = () => openModal(product);
                 
-                // Card HTML
                 card.innerHTML = `
-                    <div class="product-image-container relative bg-zinc-900">
+                    <div class="product-image-container relative bg-slate-100">
                         <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
                     <div class="p-4 md:p-6 flex-grow flex flex-col justify-between">
                         <div>
-                            <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mb-1">${product.category}</p>
-                            <h3 class="text-sm md:text-lg font-semibold tracking-wide mb-2 leading-tight">${product.name}</h3>
+                            <p class="text-[10px] md:text-xs text-slate-500 uppercase tracking-widest mb-1">${product.category}</p>
+                            <h3 class="text-sm md:text-lg font-bold tracking-wide mb-2 leading-tight text-slate-900">${product.name}</h3>
                         </div>
-                        <div class="mt-4 pt-4 border-t border-white/10 space-y-1">
-                            <p class="text-xs md:text-sm flex justify-between"><span class="text-gray-400">Size:</span> <span>${displaySize}</span></p>
-                            <p class="text-xs md:text-sm flex justify-between"><span class="text-gray-400">Finish:</span> <span>${product.finish}</span></p>
+                        <div class="mt-4 pt-4 border-t border-black/5 space-y-1 text-slate-700">
+                            <p class="text-xs md:text-sm flex justify-between"><span class="text-slate-500">Size:</span> <span class="font-medium">${displaySize}</span></p>
+                            <p class="text-xs md:text-sm flex justify-between"><span class="text-slate-500">Finish:</span> <span class="font-medium">${product.finish}</span></p>
                         </div>
                     </div>
                 `;
@@ -539,10 +558,12 @@
             currentCategory = cat;
             renderNav();
             renderProducts();
-            // Smooth scroll to collections start if below it
+            
+            // Smooth scroll to collections strictly if we are way below it
             const collectionsEl = document.getElementById('collections');
-            if(window.scrollY < collectionsEl.offsetTop - 100) {
-                 window.scrollTo({ top: collectionsEl.offsetTop, behavior: 'smooth' });
+            const stickyOffset = 80;
+            if(window.scrollY > collectionsEl.offsetTop) {
+                 window.scrollTo({ top: collectionsEl.offsetTop - stickyOffset, behavior: 'smooth' });
             }
         }
 
@@ -557,14 +578,13 @@
             document.getElementById('modal-finish').innerText = product.finish;
             document.getElementById('modal-sub').innerText = product.subcategory;
 
-            // Inquiry Links setup
             const textMessage = `Hello Diamond Surface! I am interested in your tile:%0A*Name:* ${product.name}%0A*Size:* ${displaySize}%0A*Finish:* ${product.finish}%0A*Category:* ${product.category}`;
             document.getElementById('modal-whatsapp-1').href = `https://wa.me/${INQUIRY_PHONE_1}?text=${textMessage}`;
             document.getElementById('modal-whatsapp-2').href = `https://wa.me/${INQUIRY_PHONE_2}?text=${textMessage}`;
             document.getElementById('modal-email').href = `mailto:${INQUIRY_EMAIL}?subject=Enquiry: ${product.name} Tile&body=${textMessage.replace(/%0A/g, '%0D%0A')}`;
 
             document.getElementById('product-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
@@ -658,7 +678,7 @@
                     end: "bottom top",
                     scrub: true
                 },
-                opacity: 0.5,
+                opacity: 0.2,
             });
         });
     </script>
