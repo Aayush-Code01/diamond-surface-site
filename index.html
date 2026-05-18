@@ -36,6 +36,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
+    <!-- Papa Parse for Google Sheets CSV integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
     <!-- Google Fonts Fallback -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -392,15 +395,14 @@
     </div>
 
     <!-- Product Inquiry Modal -->
-    <!-- Added fixed padding and strictly constrained modal container height -->
     <div id="product-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md">
         <!-- Close Overlay -->
         <div class="absolute inset-0 cursor-pointer" onclick="closeModal()"></div>
         
-        <!-- Modal Content (Bounded to max-h-[90vh] with overflow handling) -->
+        <!-- Modal Content -->
         <div class="modal-content relative w-full max-w-4xl bg-white border border-black/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
             
-            <!-- Close Button (Always visible on top of content) -->
+            <!-- Close Button -->
             <button onclick="closeModal()" class="absolute top-3 right-3 z-[60] w-10 h-10 bg-slate-100/90 hover:bg-slate-200 text-slate-900 rounded-full flex items-center justify-center transition shadow-sm backdrop-blur-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -410,7 +412,7 @@
                 <img id="modal-image" src="" alt="Product" class="w-full h-full object-cover">
             </div>
 
-            <!-- Details Side (Scrollable area) -->
+            <!-- Details Side -->
             <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-start overflow-y-auto pt-14 md:pt-10">
                 <p id="modal-category" class="text-sm text-slate-500 tracking-widest uppercase mb-1"></p>
                 <h3 id="modal-title" class="text-2xl md:text-4xl font-light mb-6 text-slate-900"></h3>
@@ -450,34 +452,13 @@
 
     <!-- Application Logic -->
     <script>
-        // Data parsed from Google Sheet
-        const productsData = [
-            { category: "Full Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "ALMOND GLOSSY", finish: "Extra Gloss", subcategory: "Plain", image: "https://skera.b-cdn.net/geogres/product/CM-58413541718363970.jpg" },
-            { category: "Full Body Slab", size: "800 x 3000 MM", thickness: "15MM", name: "BROWN", finish: "Glossy/Matt", subcategory: "Plain", image: "https://skera.b-cdn.net/geogres/product/CM-69967871681463247.jpg" },
-            { category: "Full Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "SNP BLACK", finish: "Glossy/Matt", subcategory: "SNP", image: "https://skera.b-cdn.net/geogres/product/CM-90003891681463055.jpg" },
-            { category: "Full Body Slab", size: "800 x 3000 MM", thickness: "15MM", name: "SNP BROWN", finish: "Glossy/Matt", subcategory: "SNP", image: "https://skera.b-cdn.net/geogres/product/CM-79617951681463356.jpg" },
-            { category: "Colour Body Slab", size: "1200 X 3200 MM", thickness: "15MM", name: "ARMANI GREY", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-40455701682168561.jpg" },
-            { category: "Colour Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "AMAZON BLACK", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-80955941682159318.jpg" },
-            { category: "Colour Body Slab", size: "800 X 3000 MM", thickness: "15MM", name: "BIANCO CARRARA MATT", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-14352961682165579.jpg" },
-            { category: "Colour Body Slab", size: "800 x 3200 MM", thickness: "15MM", name: "AMAZON BLACK", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-85922641682168520.jpg" },
-            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "ALMA GOLD", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-88152331717750293.jpg" },
-            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "AURORA NATURAL", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-94701441681387867.jpg" },
-            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "ALMOND BEIGE", finish: "Gress Matt", subcategory: "Gress Matt", image: "https://skera.b-cdn.net/geogres/product/CM-73417451682169950.jpg" },
-            { category: "GVT Slab", size: "1200 X 2400 MM", thickness: "", name: "AMAZONITE", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-71441311681996497.jpg" },
-            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "2709 GLOSSY", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-84123981753686637.jpg" },
-            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "ADDAGIO CREMA", finish: "Carving", subcategory: "Carving", image: "https://skera.b-cdn.net/geogres/product/CM-75281721751294539.jpg" },
-            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "ABRIA AZU", finish: "High Gloss", subcategory: "High Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-75281721751294539.jpg" },
-            { category: "GVT Collection", size: "600 X 600 MM", thickness: "", name: "ALABASTRO", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-54273371719038703.jpg" },
-            { category: "GVT Collection", size: "600 X 600 MM", thickness: "", name: "ANTERO BEIGE", finish: "Matt", subcategory: "Matt", image: "https://skera.b-cdn.net/geogres/product/CM-85252801718968026.jpg" },
-            { category: "GVT Collection", size: "800 X 1600 MM", thickness: "", name: "2709 GLOSSY", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-84123981753686637.jpg" }
-        ];
+        let productsData = [];
+        let categories = ["All"];
+        let currentCategory = "All";
 
         const INQUIRY_PHONE_1 = "9647755554292"; 
         const INQUIRY_PHONE_2 = "9647855554292"; 
         const INQUIRY_EMAIL = "info@diamondsurface.co";
-
-        const categories = ["All", ...new Set(productsData.map(p => p.category))];
-        let currentCategory = "All";
 
         // Navigation elements
         const desktopNav = document.getElementById('desktop-cat-nav');
@@ -592,11 +573,43 @@
             document.body.style.overflow = ''; 
         }
 
-        // Init App Data
-        renderNav();
-        renderProducts();
+        // Fetch Data from Google Sheets
+        function initData() {
+            const sheetUrl = "https://docs.google.com/spreadsheets/d/1Q0xNBGSpXFOLuo5htMYFXtwhTPkdYe6ALl7Y8eFldEk/export?format=csv";
+            
+            Papa.parse(sheetUrl, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
+                    
+                    // Map CSV rows directly to product objects based on column headers
+                    productsData = data.filter(row => row["Category"] && row["Image Link"]).map(row => ({
+                        category: row["Category"] || "",
+                        size: row["Tile Size"] || "",
+                        thickness: row["Tile Thickness"] || "",
+                        name: row["Tile Body"] || row["Tile Name"] || "Unnamed Collection",
+                        finish: row["Tile Finish"] || "",
+                        subcategory: row["Subcategory"] || "",
+                        image: row["Image Link"] || ""
+                    }));
 
-        // GSAP Animation Logic (PRESERVED)
+                    categories = ["All", ...new Set(productsData.map(p => p.category))];
+                    
+                    renderNav();
+                    renderProducts();
+                },
+                error: function(err) {
+                    console.error("Failed to fetch Google Sheet data:", err);
+                    productCountLabel.innerText = "Error loading products.";
+                }
+            });
+        }
+
+        // Initialize App Fetch
+        initData();
+
+        // GSAP Animation Logic
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
