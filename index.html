@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamond Surface - Coming Soon</title>
+    <title>Diamond Surface - Collections</title>
     
     <!-- SEO & Social Meta Tags -->
     <meta name="description" content="Watch this space for updates on our latest products..">
@@ -14,7 +14,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://diamondsurface.co/">
-    <meta property="og:title" content="Diamond Surface - Coming Soon">
+    <meta property="og:title" content="Diamond Surface - Collections">
     <meta property="og:description" content="Watch this space for updates on our latest products..">
     <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
@@ -25,7 +25,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://diamondsurface.co/">
-    <meta property="twitter:title" content="Diamond Surface - Coming Soon">
+    <meta property="twitter:title" content="Diamond Surface - Collections">
     <meta property="twitter:description" content="Watch this space for updates on our latest products..">
     <meta property="twitter:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
     
@@ -86,7 +86,7 @@
             pointer-events: none;
         }
 
-        /* HIDE VIDEO CONTROLS FORCEFULLY (Including Overlay Play Button) */
+        /* HIDE VIDEO CONTROLS FORCEFULLY */
         video::-webkit-media-controls,
         video::-webkit-media-controls-start-playback-button,
         video::-webkit-media-controls-play-button,
@@ -104,7 +104,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 2; /* Sits on top of video */
+            z-index: 2;
             background: transparent;
         }
 
@@ -114,14 +114,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 1;
             pointer-events: none;
         }
 
-        /* Glassmorphism Section */
+        /* Glassmorphism Sections */
         .glass-section {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -146,13 +146,84 @@
             justify-content: space-between;
         }
 
-        /* Social Icons Hover Effect */
-        .social-icon {
-            transition: transform 0.3s ease, opacity 0.3s ease;
+        /* Social Icons & Nav Hover Effect */
+        .social-icon, .nav-link {
+            transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
         }
         .social-icon:hover {
             transform: translateY(-3px);
             opacity: 0.8;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            opacity: 1;
+        }
+        .nav-link {
+            opacity: 0.6;
+        }
+
+        /* Product Cards */
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .product-image-container {
+            overflow: hidden;
+            aspect-ratio: 2 / 3; /* Matches typical slab proportions visually */
+        }
+        .product-image {
+            transition: transform 0.6s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        /* Modal Transitions */
+        #product-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #product-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        #product-modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        /* Hide scrollbar for category pills on mobile */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -160,10 +231,7 @@
 
     <!-- Fixed Video Background -->
     <div class="video-bg-container">
-        <!-- Shield to block touches/icons -->
         <div class="video-shield"></div>
-        
-        <!-- Force Autoplay settings with disable attributes -->
         <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablePictureInPicture disableremoteplayback class="video-bg">
             <source src="assets/background.mp4" type="video/mp4">
         </video>
@@ -176,11 +244,16 @@
         <!-- Hero Section -->
         <section class="hero-section w-full px-6 py-6 md:px-12 md:py-8 relative">
             
-            <!-- Header -->
+            <!-- Header (Updated with Categories) -->
             <header class="gsap-header w-full flex flex-col md:flex-row items-center justify-between relative z-20 gap-6 md:gap-0">
                 <div class="logo-container w-48 md:w-64">
-                    <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain">
+                    <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
+
+                <!-- Desktop Category Nav -->
+                <nav class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-widest uppercase" id="header-nav">
+                    <!-- Nav items injected via JS -->
+                </nav>
 
                 <div class="socials hidden md:flex items-center gap-6">
                     <a href="#" class="social-icon" aria-label="Instagram">
@@ -197,23 +270,19 @@
 
             <!-- Center Content -->
             <div class="flex-grow flex flex-col justify-center items-center text-center pb-20 md:pb-0 relative z-10">
-                
                 <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 md:mb-12">
                     <div class="gsap-center-logo w-40 md:w-60 lg:w-72 h-auto">
-                        <img src="assets/logo-center-1.svg" alt="Feature Logo 1" class="w-full h-full object-contain">
+                        <img src="assets/logo-center-1.svg" alt="" class="w-full h-full object-contain">
                     </div>
-                    
-                    <!-- Right Logo (Size reduced further: w-28->w-24, md:w-40->w-36, lg:w-48->w-40) -->
                     <div class="gsap-center-logo w-24 md:w-36 lg:w-40 h-auto">
-                        <img src="assets/logo-center-2.svg" alt="Feature Logo 2" class="w-full h-full object-contain">
+                        <img src="assets/logo-center-2.svg" alt="" class="w-full h-full object-contain">
                     </div>
                 </div>
 
                 <h1 class="gsap-text text-2xl md:text-4xl lg:text-5xl font-light tracking-wide leading-relaxed max-w-4xl mx-auto px-4">
-                    <span class="gsap-char-reveal block md:inline">A new experience</span>
-                    <span class="gsap-char-reveal block md:inline">is coming soon</span>
+                    <span class="gsap-char-reveal block md:inline">Discover our premium</span>
+                    <span class="gsap-char-reveal block md:inline">slab collections</span>
                 </h1>
-                
             </div>
 
             <!-- Mobile Social Icons -->
@@ -224,36 +293,53 @@
                 <a href="#" class="social-icon" aria-label="Facebook">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
-                <a href="#" class="social-icon" aria-label="TikTok">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
-                </a>
             </div>
 
             <!-- Arrow -->
             <div class="absolute bottom-24 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
-                <a href="#contact" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
+                <a href="#collections" style="opacity: 0;" class="gsap-arrow pointer-events-auto animate-bounce opacity-70 cursor-pointer hover:opacity-100 transition-opacity text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
                 </a>
             </div>
-
         </section>
 
-        <!-- Glass Effect Contact Section -->
-        <section id="contact" class="glass-section w-full min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center">
-            
-            <div class="max-w-3xl mx-auto space-y-12">
+        <!-- Product Collections Section (NEW) -->
+        <section id="collections" class="glass-section w-full min-h-screen py-20 px-4 md:px-12">
+            <div class="max-w-7xl mx-auto">
                 
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-white/10 pb-6 gap-6">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-light mb-2" id="current-category-title">All Collections</h2>
+                        <p class="text-gray-400 text-sm md:text-base uppercase tracking-widest" id="product-count">Loading...</p>
+                    </div>
+
+                    <!-- Mobile/Tablet Category Pills -->
+                    <div class="flex md:hidden overflow-x-auto hide-scroll gap-3 pb-2 w-full" id="mobile-category-nav">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Dynamic Product Grid (2 cols mobile, 3 cols desktop) -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12" id="product-grid">
+                    <!-- Products injected via JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Glass Effect Contact Section (PRESERVED) -->
+        <section id="contact" class="glass-section w-full flex flex-col justify-center items-center py-20 px-6 text-center border-t border-white/5">
+            <div class="max-w-3xl mx-auto space-y-12">
                 <div class="space-y-4">
                     <h2 class="text-2xl md:text-4xl font-bold mb-6">Get in Touch</h2>
                     <p class="text-gray-300 text-base md:text-xl font-light leading-relaxed">
                         We are crafting something extraordinary for you. 
-                        While we put the finishing touches on our new digital home, 
-                        feel free to reach out to us directly.
+                        Feel free to reach out to us directly for any inquiries.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-12">
-                    
                     <div class="flex flex-col items-center group cursor-pointer" onclick="document.execCommand('copy')">
                         <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -277,7 +363,6 @@
                         <h3 class="text-sm font-semibold tracking-wider uppercase text-gray-400 mb-1">Office</h3>
                         <p class="text-base md:text-xl">بغداد، الكراده خارج قرب ساحه التحريات</p>
                     </div>
-
                 </div>
             </div>
 
@@ -286,34 +371,215 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-180"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
 
-            <!-- Footer -->
-            <footer class="pt-4 border-t border-white/10 w-full max-w-6xl">
+            <footer class="pt-4 border-t border-white/10 w-full max-w-6xl mt-8">
                 <p class="text-sm text-gray-400">
-                    &copy; 2025 Diamond Surface. All rights reserved.
+                    &copy; 2026 Diamond Surface. All rights reserved.
                 </p>
             </footer>
         </section>
 
     </div>
 
-    <!-- GSAP Animation Logic -->
+    <!-- Product Inquiry Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+        <!-- Close Overlay -->
+        <div class="absolute inset-0 cursor-pointer" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="modal-content relative w-full max-w-4xl bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition backdrop-blur-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+            <!-- Image Side -->
+            <div class="w-full md:w-1/2 h-64 md:h-auto bg-zinc-800 relative">
+                <img id="modal-image" src="" alt="Product" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Details Side -->
+            <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+                <p id="modal-category" class="text-sm text-gray-400 tracking-widest uppercase mb-2"></p>
+                <h3 id="modal-title" class="text-2xl md:text-4xl font-light mb-6"></h3>
+                
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between border-b border-white/10 pb-2">
+                        <span class="text-gray-400">Size & Thickness</span>
+                        <span id="modal-size" class="font-medium text-right"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-2">
+                        <span class="text-gray-400">Finish</span>
+                        <span id="modal-finish" class="font-medium text-right"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-2">
+                        <span class="text-gray-400">Subcategory</span>
+                        <span id="modal-sub" class="font-medium text-right"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <a id="modal-whatsapp" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white py-3 px-6 rounded-lg font-medium transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        Inquire on WhatsApp
+                    </a>
+                    <a id="modal-email" href="#" class="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white py-3 px-6 rounded-lg font-medium transition border border-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        Send an Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
     <script>
+        // Data parsed from Google Sheet
+        const productsData = [
+            { category: "Full Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "ALMOND GLOSSY", finish: "Extra Gloss", subcategory: "Plain", image: "https://skera.b-cdn.net/geogres/product/CM-58413541718363970.jpg" },
+            { category: "Full Body Slab", size: "800 x 3000 MM", thickness: "15MM", name: "BROWN", finish: "Glossy/Matt", subcategory: "Plain", image: "https://skera.b-cdn.net/geogres/product/CM-69967871681463247.jpg" },
+            { category: "Full Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "SNP BLACK", finish: "Glossy/Matt", subcategory: "SNP", image: "https://skera.b-cdn.net/geogres/product/CM-90003891681463055.jpg" },
+            { category: "Full Body Slab", size: "800 x 3000 MM", thickness: "15MM", name: "SNP BROWN", finish: "Glossy/Matt", subcategory: "SNP", image: "https://skera.b-cdn.net/geogres/product/CM-79617951681463356.jpg" },
+            { category: "Colour Body Slab", size: "1200 X 3200 MM", thickness: "15MM", name: "ARMANI GREY", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-40455701682168561.jpg" },
+            { category: "Colour Body Slab", size: "800 x 2400 MM", thickness: "15MM", name: "AMAZON BLACK", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-80955941682159318.jpg" },
+            { category: "Colour Body Slab", size: "800 X 3000 MM", thickness: "15MM", name: "BIANCO CARRARA MATT", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-14352961682165579.jpg" },
+            { category: "Colour Body Slab", size: "800 x 3200 MM", thickness: "15MM", name: "AMAZON BLACK", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-85922641682168520.jpg" },
+            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "ALMA GOLD", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-88152331717750293.jpg" },
+            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "AURORA NATURAL", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-94701441681387867.jpg" },
+            { category: "GVT Slab", size: "1200 X 1800 MM", thickness: "9MM", name: "ALMOND BEIGE", finish: "Gress Matt", subcategory: "Gress Matt", image: "https://skera.b-cdn.net/geogres/product/CM-73417451682169950.jpg" },
+            { category: "GVT Slab", size: "1200 X 2400 MM", thickness: "", name: "AMAZONITE", finish: "Extra Gloss", subcategory: "Extra Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-71441311681996497.jpg" },
+            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "2709 GLOSSY", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-84123981753686637.jpg" },
+            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "ADDAGIO CREMA", finish: "Carving", subcategory: "Carving", image: "https://skera.b-cdn.net/geogres/product/CM-75281721751294539.jpg" },
+            { category: "GVT Collection", size: "600 X 1200 MM", thickness: "", name: "ABRIA AZU", finish: "High Gloss", subcategory: "High Gloss", image: "https://skera.b-cdn.net/geogres/product/CM-75281721751294539.jpg" },
+            { category: "GVT Collection", size: "600 X 600 MM", thickness: "", name: "ALABASTRO", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-54273371719038703.jpg" },
+            { category: "GVT Collection", size: "600 X 600 MM", thickness: "", name: "ANTERO BEIGE", finish: "Matt", subcategory: "Matt", image: "https://skera.b-cdn.net/geogres/product/CM-85252801718968026.jpg" },
+            { category: "GVT Collection", size: "800 X 1600 MM", thickness: "", name: "2709 GLOSSY", finish: "Glossy", subcategory: "Glossy", image: "https://skera.b-cdn.net/geogres/product/CM-84123981753686637.jpg" }
+        ];
+
+        const INQUIRY_PHONE = "07755554292"; // WhatsApp format
+        const INQUIRY_EMAIL = "info@diamondsurface.co";
+
+        // Extract unique categories
+        const categories = ["All", ...new Set(productsData.map(p => p.category))];
+        let currentCategory = "All";
+
+        // Initialize DOM Elements
+        const headerNav = document.getElementById('header-nav');
+        const mobileNav = document.getElementById('mobile-category-nav');
+        const productGrid = document.getElementById('product-grid');
+        const currentCategoryTitle = document.getElementById('current-category-title');
+        const productCountLabel = document.getElementById('product-count');
+
+        // Functions
+        function renderNav() {
+            headerNav.innerHTML = '';
+            mobileNav.innerHTML = '';
+            
+            categories.forEach(cat => {
+                // Desktop Link
+                const aDesk = document.createElement('a');
+                aDesk.href = "#collections";
+                aDesk.className = `nav-link cursor-pointer ${currentCategory === cat ? 'active text-white' : ''}`;
+                aDesk.innerText = cat;
+                aDesk.onclick = (e) => { e.preventDefault(); setCategory(cat); };
+                headerNav.appendChild(aDesk);
+
+                // Mobile Pill
+                const btnMobile = document.createElement('button');
+                btnMobile.className = `whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${currentCategory === cat ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`;
+                btnMobile.innerText = cat;
+                btnMobile.onclick = () => setCategory(cat);
+                mobileNav.appendChild(btnMobile);
+            });
+        }
+
+        function renderProducts() {
+            productGrid.innerHTML = '';
+            const filteredProducts = currentCategory === "All" 
+                ? productsData 
+                : productsData.filter(p => p.category === currentCategory);
+
+            currentCategoryTitle.innerText = currentCategory === "All" ? "All Collections" : currentCategory;
+            productCountLabel.innerText = `${filteredProducts.length} Product${filteredProducts.length !== 1 ? 's' : ''}`;
+
+            filteredProducts.forEach((product, index) => {
+                // Format size with thickness if available
+                const displaySize = product.thickness ? `${product.size}-${product.thickness}` : product.size;
+
+                const card = document.createElement('div');
+                card.className = "product-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full";
+                card.onclick = () => openModal(product);
+                
+                // Card HTML
+                card.innerHTML = `
+                    <div class="product-image-container relative bg-zinc-900">
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mb-1">${product.category}</p>
+                            <h3 class="text-sm md:text-lg font-semibold tracking-wide mb-2 leading-tight">${product.name}</h3>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-white/10 space-y-1">
+                            <p class="text-xs md:text-sm flex justify-between"><span class="text-gray-400">Size:</span> <span>${displaySize}</span></p>
+                            <p class="text-xs md:text-sm flex justify-between"><span class="text-gray-400">Finish:</span> <span>${product.finish}</span></p>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderNav();
+            renderProducts();
+            // Smooth scroll to collections start if below it
+            const collectionsEl = document.getElementById('collections');
+            if(window.scrollY < collectionsEl.offsetTop - 100) {
+                 window.scrollTo({ top: collectionsEl.offsetTop, behavior: 'smooth' });
+            }
+        }
+
+        // Modal Functions
+        function openModal(product) {
+            const displaySize = product.thickness ? `${product.size} - ${product.thickness}` : product.size;
+            
+            document.getElementById('modal-image').src = product.image;
+            document.getElementById('modal-category').innerText = product.category;
+            document.getElementById('modal-title').innerText = product.name;
+            document.getElementById('modal-size').innerText = displaySize;
+            document.getElementById('modal-finish').innerText = product.finish;
+            document.getElementById('modal-sub').innerText = product.subcategory;
+
+            // Inquiry Links setup
+            const textMessage = `Hello Diamond Surface! I am interested in your tile:%0A*Name:* ${product.name}%0A*Size:* ${displaySize}%0A*Finish:* ${product.finish}%0A*Category:* ${product.category}`;
+            document.getElementById('modal-whatsapp').href = `https://wa.me/${INQUIRY_PHONE}?text=${textMessage}`;
+            document.getElementById('modal-email').href = `mailto:${INQUIRY_EMAIL}?subject=Enquiry: ${product.name} Tile&body=${textMessage.replace(/%0A/g, '%0D%0A')}`;
+
+            document.getElementById('product-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            document.body.style.overflow = ''; 
+        }
+
+        // Init App Data
+        renderNav();
+        renderProducts();
+
+        // GSAP Animation Logic (PRESERVED)
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // AUTO-PLAY LOGIC:
             const video = document.getElementById("bg-video");
-            
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                
-                // Aggressive play attempt
                 const attemptPlay = () => {
                     video.play().catch(e => {
-                        console.log("Autoplay check:", e);
-                        // If blocked, we rely on the first user interaction (touch/scroll) to unlock it
-                        // but the user won't see a play button because of our CSS shield/opacity settings
                         window.addEventListener('touchstart', () => video.play(), { once: true });
                         window.addEventListener('scroll', () => video.play(), { once: true });
                     });
