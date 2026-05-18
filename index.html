@@ -1,1031 +1,1016 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamond Surface - Collections</title>
-    
-    <!-- SEO & Social Meta Tags -->
-    <meta name="description" content="Discover premium slab collections and crafted masterpieces in every surface.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Gear Inventory | Polar Bear Films</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://diamondsurface.co/">
-    <meta property="og:title" content="Diamond Surface - Collections">
-    <meta property="og:description" content="Discover premium slab collections and crafted masterpieces in every surface.">
-    <meta property="og:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
-    <meta property="og:image:secure_url" content="https://diamondsurface.co/assets/social-image.png?v=1">
-    <meta property="og:image:type" content="image/png">
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1G4op79FMnkfDaYsHYqCwToCgzi2HOdVp">
+    
+    <!-- Meta Tags for Social Media / WhatsApp Sharing -->
+    <meta property="og:title" content="Gear Inventory | Polar Bear Films">
+    <meta property="og:description" content="Professional cinematography gear rental. Select your kit and get an instant quote.">
+    <meta property="og:image" content="https://lh3.googleusercontent.com/d/1DwixbHZFc9IuMHIJoFeHq-MQB5oy5R5_">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://diamondsurface.co/">
-    <meta property="twitter:title" content="Diamond Surface - Collections">
-    <meta property="twitter:description" content="Discover premium slab collections and crafted masterpieces in every surface.">
-    <meta property="twitter:image" content="https://diamondsurface.co/assets/social-image.png?v=1">
+    <meta property="og:type" content="website">
     
-    <!-- Tailwind CSS -->
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gear Inventory | Polar Bear Films">
+    <meta name="twitter:description" content="Professional cinematography gear rental. Select your kit and get an instant quote.">
+    <meta name="twitter:image" content="https://lh3.googleusercontent.com/d/1DwixbHZFc9IuMHIJoFeHq-MQB5oy5R5_">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#110086',
+                    },
+                    fontFamily: {
+                        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    animation: {
+                        'scale-in': 'scaleIn 0.2s ease-out',
+                        'shimmer': 'shimmer 1.5s infinite',
+                    },
+                    keyframes: {
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        shimmer: {
+                            '100%': { transform: 'translateX(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- GSAP for Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <!-- Papa Parse for Google Sheets CSV integration -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-    <!-- Google Fonts Fallback -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Custom Font Setup */
-        @font-face {
-            font-family: 'Space Grotesk Custom';
-            src: url('assets/SpaceGrotesk.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            scroll-behavior: smooth;
+        /* Custom Scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Floating Checkout Bar Transitions */
+        #checkout-bar {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #checkout-bar.hidden-bar {
+            transform: translateY(150%);
+        }
+        #checkout-bar.visible-bar {
+            transform: translateY(0);
         }
 
-        body {
-            font-family: 'Space Grotesk Custom', 'Space Grotesk', sans-serif;
-            background-color: #ffffff;
-            color: #020617;
-            overflow-x: hidden;
-        }
-
-        /* HIDE VIDEO CONTROLS FORCEFULLY */
-        video::-webkit-media-controls,
-        video::-webkit-media-controls-start-playback-button,
-        video::-webkit-media-controls-play-button,
-        video::-webkit-media-controls-panel,
-        video::-webkit-media-controls-overlay-play-button {
-            display: none !important;
-            -webkit-appearance: none !important;
-            opacity: 0 !important;
-        }
-
-        /* Interactions */
-        .social-icon {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        .social-icon:hover {
-            transform: translateY(-3px);
-            opacity: 0.7;
-        }
-
-        /* High Contrast Product Cards */
-        .product-card {
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.3s ease;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-color: #cbd5e1;
-        }
-        .product-card.selected {
-            border-color: #16a34a; 
-            box-shadow: 0 0 0 2px #16a34a20;
-        }
-        .product-image-container {
-            overflow: hidden;
-            aspect-ratio: 2 / 3; 
-        }
-        .product-image {
-            transition: transform 0.6s ease;
-        }
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
-        /* Modals Transitions */
-        .modal-overlay {
+        /* Category Expand/Collapse Transitions */
+        .category-content {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 0;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            overflow: hidden;
         }
-        .modal-overlay.active {
+        .category-content.expanded {
+            max-height: 5000px; /* Arbitrary large number to allow full expansion */
             opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            transform: translateY(20px) scale(0.98);
-            transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .modal-overlay.active .modal-content {
-            transform: translateY(0) scale(1);
         }
 
-        .dropdown-open {
-            display: block !important;
+        /* Pill Button Styles */
+        .pill-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-width: 1px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            user-select: none;
         }
-
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        @media (min-width: 640px) {
+            .pill-btn {
+                font-size: 0.875rem;
+                padding: 0.625rem 1.5rem;
+            }
         }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .pill-active {
+            background-color: #110086;
+            border-color: #110086;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(17, 0, 134, 0.2);
         }
-
-        /* Jiggle Animation for WhatsApp */
-        @keyframes jiggle-alert {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            5%, 15% { transform: scale(1.1) rotate(-8deg); }
-            10%, 20% { transform: scale(1.1) rotate(8deg); }
-            25% { transform: scale(1) rotate(0deg); }
+        .dark .pill-active {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
         }
-        .animate-jiggle-alert {
-            animation: jiggle-alert 4s infinite ease-in-out;
+        .pill-inactive {
+            background-color: white;
+            border-color: #e2e8f0;
+            color: #475569;
+        }
+        .pill-inactive:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+        .dark .pill-inactive {
+            background-color: #0f172a;
+            border-color: #1e293b;
+            color: #cbd5e1;
+        }
+        .dark .pill-inactive:hover {
+            border-color: #334155;
+            background-color: #1e293b;
         }
     </style>
 </head>
-<body class="relative">
+<body class="bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-300 pb-28 sm:pb-36 selection:bg-brand/20 selection:text-brand dark:selection:bg-blue-500/30">
 
-    <!-- Global Header (Sticky Top) -->
-    <header class="gsap-header fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-[60]">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="logo-container w-40 md:w-56 cursor-pointer flex-shrink-0" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <img src="assets/diamond surface black.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
-            </div>
-
-            <!-- Desktop Category Nav - Increased Breakpoint to XL to avoid horizontal scrolling/cramping -->
-            <nav class="hidden xl:flex flex-wrap items-center justify-center gap-6 text-sm font-bold tracking-widest uppercase flex-grow px-8" id="desktop-cat-nav">
-                <!-- Injected via JS -->
-            </nav>
-
-            <div class="flex items-center gap-4 flex-shrink-0">
-                <!-- Socials -->
-                <div class="socials hidden md:flex items-center gap-4 border-slate-200 px-4 rtl:border-l ltr:border-r" id="header-socials">
-                    <a href="#" class="social-icon text-[#138A8E]" aria-label="Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href="#" class="social-icon text-[#138A8E]" aria-label="Facebook">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
-                    <a href="#" class="social-icon text-[#138A8E]" aria-label="TikTok">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
-                    </a>
-                </div>
-
-                <!-- Language Toggle -->
-                <button onclick="toggleLanguage()" class="flex items-center gap-1.5 text-slate-900 font-bold hover:text-[#138A8E] transition px-2 py-1 rounded-lg border border-transparent hover:border-slate-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                    <span id="lang-text" class="text-sm tracking-wide uppercase">English</span>
-                </button>
-
-                <!-- Open Cart Button -->
-                <button onclick="openCart()" class="flex items-center gap-2 text-slate-900 font-semibold hover:text-[#138A8E] transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                    <span class="text-sm tracking-wide uppercase hidden sm:inline" data-i18n="inquiry">استفسار</span>
-                    <span id="header-cart-count" class="bg-[#D98835] text-white text-xs px-2 py-0.5 rounded-full">0</span>
-                </button>
-
-                <!-- Mobile Hamburger Toggle - Also updated breakpoint -->
-                <button class="xl:hidden flex items-center text-slate-900 hover:text-[#138A8E] transition rtl:mr-2 ltr:ml-2" onclick="toggleMobileMenu()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobile-dropdown" class="hidden xl:hidden bg-white border-t border-slate-200 absolute w-full left-0 top-full shadow-lg z-50">
-            <nav class="flex flex-col py-2 max-h-[60vh] overflow-y-auto" id="mobile-cat-nav">
-                <!-- Injected via JS -->
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="scroll-content pt-20"> 
-        
-        <!-- Hero Section -->
-        <section class="relative w-full h-[65vh] flex flex-col justify-center items-center overflow-hidden bg-slate-100">
-            <video autoplay muted loop playsinline preload="auto" disablePictureInPicture class="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="assets/background.mp4" type="video/mp4">
-            </video>
-        </section>
-
-        <!-- Geogres Inspired Copy Section -->
-        <section class="py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto text-center">
-            <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mb-6 uppercase tracking-wider" data-i18n="elevating_spaces">الارتقاء بالمساحات بأسطح فاخرة</h2>
-            <div class="w-16 h-1 bg-slate-900 mx-auto mb-8"></div>
-            <p class="text-base md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed" data-i18n="hero_desc">
-                تقدم لك دايموند سيرفيس قمة التصميم والمتانة. مستوحاة من أفضل المعايير العالمية، تم تصميم مجموعتنا الواسعة من الألواح بعناية لتحويل أي بيئة إلى تحفة من الهندسة المعمارية الحديثة.
-            </p>
-        </section>
-
-        <!-- Product Collections Section -->
-        <section id="collections" class="w-full min-h-screen pb-20 bg-slate-50 pt-10">
-            
-            <!-- Sticky Filter Navigation Bar (Categories & Dropdown Filters) -->
-            <div class="sticky top-[73px] z-40 bg-[#fdfbf7] border-y border-slate-200 shadow-md transition-all duration-300">
-                <div class="max-w-7xl mx-auto px-4 md:px-12 py-5 flex flex-col gap-4">
-                    
-                    <!-- Top Row: Title & Main Categories -->
-                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight shrink-0" id="current-category-title-large" data-i18n="all_collections">جميع المجموعات</h2>
-                        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto" id="main-cat-pills">
-                            <!-- Pills injected via JS -->
-                        </div>
-                    </div>
-
-                    <!-- Bottom Row: Subcategory Dropdowns (Compact) -->
-                    <div class="flex flex-col sm:flex-row items-center gap-4 border-t border-slate-200 pt-4">
-                        
-                        <!-- Size Dropdown -->
-                        <div class="w-full sm:w-auto flex items-center gap-3">
-                            <label class="text-sm font-bold text-slate-700 whitespace-nowrap" data-i18n="choose_by_size">اختر حسب الحجم</label>
-                            <div class="relative w-full sm:w-56">
-                                <select id="size-dropdown" onchange="setSize(this.value)" class="w-full appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-bold rounded-lg focus:ring-[#138A8E] focus:border-[#138A8E] block px-4 py-2.5 outline-none cursor-pointer shadow-sm transition hover:border-slate-400">
-                                    <!-- Options injected via JS -->
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 rtl:left-0 ltr:right-0 flex items-center px-3 text-slate-500">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Finish Dropdown -->
-                        <div class="w-full sm:w-auto flex items-center gap-3">
-                            <label class="text-sm font-bold text-slate-700 whitespace-nowrap" data-i18n="choose_by_finish">اختر حسب التشطيب</label>
-                            <div class="relative w-full sm:w-56">
-                                <select id="finish-dropdown" onchange="setFinish(this.value)" class="w-full appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-bold rounded-lg focus:ring-[#138A8E] focus:border-[#138A8E] block px-4 py-2.5 outline-none cursor-pointer shadow-sm transition hover:border-slate-400">
-                                    <!-- Options injected via JS -->
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 rtl:left-0 ltr:right-0 flex items-center px-3 text-slate-500">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dynamic Product Grid -->
-            <div class="max-w-7xl mx-auto px-4 md:px-12 pt-8">
-                <div class="mb-4">
-                    <p class="text-slate-500 font-bold text-sm" id="product-count">Loading...</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8" id="product-grid">
-                    <!-- Products injected via JS -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+            <div class="flex items-center h-7 sm:h-10 w-auto">
+                <img 
+                    id="brand-logo"
+                    src="assets/logo-header.png" 
+                    alt="Polar Bear Films" 
+                    class="h-full object-contain transition-all dark:filter dark:brightness-0 dark:invert"
+                    onerror="this.src='https://lh3.googleusercontent.com/d/18GG_sRWwFyK_or7uQDR2FE4oItbIpEZ1'; this.onerror=function(){this.style.display='none'; this.nextElementSibling.style.display='flex';};"
+                />
+                <div class="hidden bg-[#110086] dark:bg-blue-600 text-white px-2 py-1 rounded-lg font-black text-xs sm:text-sm tracking-wider items-center justify-center">
+                    PBF
                 </div>
             </div>
             
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="w-full flex flex-col justify-center items-center py-20 px-6 text-center border-t border-slate-200 bg-white">
-            <div class="max-w-3xl mx-auto space-y-12">
-                <div class="space-y-4">
-                    <h2 class="text-2xl md:text-4xl font-bold mb-6 text-slate-950 uppercase tracking-wider" data-i18n="get_in_touch">اتصل بنا</h2>
-                    <p class="text-slate-600 text-base md:text-xl leading-relaxed" data-i18n="ready_to_elevate">
-                        هل أنت مستعد للارتقاء بمساحتك؟ تواصل معنا مباشرة لأي استفسارات أو طلبات جملة أو استشارة.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-12 text-slate-800">
-                    <div class="flex flex-col items-center group cursor-pointer" onclick="document.execCommand('copy')">
-                        <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mb-4 group-hover:bg-slate-200 transition-colors border border-slate-200 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        </div>
-                        <h3 class="text-xs font-bold tracking-widest uppercase text-slate-500 mb-2" data-i18n="email">البريد الإلكتروني</h3>
-                        <a href="mailto:info@diamondsurface.co" class="text-base font-semibold hover:text-slate-600 transition-colors">info@diamondsurface.co</a>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mb-4 border border-slate-200 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        </div>
-                        <h3 class="text-xs font-bold tracking-widest uppercase text-slate-500 mb-2" data-i18n="phone">الهاتف</h3>
-                        <p class="text-base font-semibold" dir="ltr">07755554292<br>07855554292</p>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mb-4 border border-slate-200 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        </div>
-                        <h3 class="text-xs font-bold tracking-widest uppercase text-slate-500 mb-2" data-i18n="office">المكتب</h3>
-                        <p class="text-base font-semibold" data-i18n="address">بغداد، الكراده خارج قرب ساحه التحريات</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-20 mb-4 animate-bounce opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-slate-900 bg-slate-100 p-3 rounded-full border border-slate-200" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-180"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-            </div>
-
-            <footer class="pt-6 border-t border-slate-200 w-full max-w-6xl mt-8">
-                <p class="text-sm font-medium text-slate-500 tracking-wide" data-i18n="rights">
-                    &copy; 2026 دايموند سيرفيس. جميع الحقوق محفوظة.
-                </p>
-            </footer>
-        </section>
-
-    </div>
-
-    <!-- Floating Action Buttons (WhatsApp + Cart) -->
-    <div class="fixed bottom-6 rtl:left-6 ltr:right-6 z-[60] flex flex-col gap-4 items-end" id="fab-container">
-        <!-- Inquiry Cart Button -->
-        <button onclick="openCart()" id="fab-cart" class="bg-[#138A8E] hover:bg-[#094F52] text-white p-4 rounded-full shadow-2xl flex items-center gap-3 transition transform hover:scale-105">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            <span class="font-bold hidden md:inline tracking-widest uppercase text-sm" data-i18n="inquiry_cart">عربة الاستفسار</span>
-            <span id="fab-cart-count" class="bg-[#D98835] text-white text-sm font-bold w-6 h-6 rounded-full flex items-center justify-center">0</span>
-        </button>
-    </div>
-
-    <!-- Floating WhatsApp Default with Tooltip & Jiggle -->
-    <div class="fixed bottom-6 rtl:right-6 ltr:left-6 z-[60] flex items-center">
-        <a href="https://wa.me/9647755554292" target="_blank" class="relative group flex items-center">
-            <!-- WhatsApp Prompt Tooltip -->
-            <div class="absolute rtl:right-[120%] ltr:left-[120%] bg-white text-slate-800 px-4 py-2 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] border border-slate-100 font-bold text-sm whitespace-nowrap opacity-90 transition-opacity">
-                <span data-i18n="wa_prompt">تواصل معنا بالضغط هنا</span>
-                <!-- Triangle Pointing to Icon -->
-                <div class="absolute top-1/2 -translate-y-1/2 rtl:-right-1.5 ltr:-left-1.5 w-0 h-0 border-y-[6px] border-y-transparent rtl:border-l-[8px] rtl:border-l-white ltr:border-r-[8px] ltr:border-r-white"></div>
-            </div>
-
-            <!-- WhatsApp Button Icon -->
-            <div class="bg-[#25D366] group-hover:bg-[#1DA851] text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform transform group-hover:scale-105 animate-jiggle-alert cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            </div>
-        </a>
-    </div>
-
-    <!-- Single Product Detail Modal -->
-    <div id="product-modal" class="modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
-        <div class="absolute inset-0 cursor-pointer" onclick="closeProductModal()"></div>
-        <div class="modal-content relative w-full max-w-4xl bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
-            
-            <button onclick="closeProductModal()" class="absolute top-3 right-3 z-[60] w-10 h-10 bg-white hover:bg-slate-100 text-slate-900 rounded-full flex items-center justify-center transition shadow-md border border-slate-200 rtl:right-auto rtl:left-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-
-            <!-- Image Side -->
-            <div class="w-full md:w-1/2 h-56 md:h-auto bg-slate-100 relative shrink-0">
-                <img id="modal-image" src="" alt="Product" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Details Side -->
-            <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-start overflow-y-auto pt-14 md:pt-10">
-                <p id="modal-category" class="text-xs font-bold text-slate-500 tracking-widest uppercase mb-1"></p>
-                <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-6 text-slate-950"></h3>
+            <div class="flex items-center space-x-1.5 sm:space-x-3">
+                <button 
+                    onclick="toggleTheme()" 
+                    class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
+                    aria-label="Toggle Theme"
+                >
+                    <svg id="theme-icon-sun" class="w-4 h-4 sm:w-5 sm:h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
+                    <svg id="theme-icon-moon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                </button>
                 
-                <div class="space-y-4 mb-8 text-slate-700">
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-slate-500 font-medium tracking-wide" data-i18n="size_thickness">الحجم والسماكة</span>
-                        <span id="modal-size" class="font-bold rtl:text-left ltr:text-right text-slate-900" dir="ltr"></span>
+                <a href="tel:+919650563719" class="group flex items-center space-x-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-[#110086]/5 dark:bg-blue-500/10 rounded-xl hover:bg-[#110086]/10 dark:hover:bg-blue-500/20 transition-all duration-300 active:scale-95">
+                    <div class="text-[#110086] dark:text-blue-400 group-hover:scale-110 transition-transform">
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                     </div>
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-slate-500 font-medium tracking-wide" data-i18n="finish">التشطيب</span>
-                        <span id="modal-finish" class="font-bold rtl:text-left ltr:text-right text-slate-900"></span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-slate-500 font-medium tracking-wide" data-i18n="subcategory">الفئة الفرعية</span>
-                        <span id="modal-sub" class="font-bold rtl:text-left ltr:text-right text-slate-900"></span>
-                    </div>
-                </div>
-
-                <div class="mt-auto pb-2">
-                    <button id="modal-add-cart-btn" onclick="toggleCartFromModal()" class="w-full flex items-center justify-center gap-2 bg-[#D98835] hover:bg-[#B25725] text-white py-4 px-6 rounded-xl font-bold uppercase tracking-widest transition shadow-lg text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
-                        <span id="modal-add-cart-text" data-i18n="select_for_inquiry">اختر للاستفسار</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Inquiry Cart Modal -->
-    <div id="cart-modal" class="modal-overlay fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6 bg-slate-900/70 backdrop-blur-sm">
-        <div class="absolute inset-0 cursor-pointer" onclick="closeCart()"></div>
-        <div class="modal-content relative w-full max-w-2xl bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            
-            <!-- Cart Header -->
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                <div class="flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-800"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                    <h3 class="text-xl font-bold text-slate-900 uppercase tracking-widest" data-i18n="your_inquiry">استفسارك</h3>
-                </div>
-                <button onclick="closeCart()" class="w-10 h-10 bg-white hover:bg-slate-200 text-slate-900 rounded-full flex items-center justify-center transition border border-slate-200 shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-            </div>
-
-            <!-- Cart Items List (Scrollable) -->
-            <div id="cart-items-container" class="p-6 flex-grow overflow-y-auto space-y-4 bg-white">
-                <!-- Items injected via JS -->
-                <div id="empty-cart-msg" class="text-center py-10 text-slate-500">
-                    <p class="text-lg font-medium" data-i18n="empty_cart">قائمة استفساراتك فارغة.</p>
-                    <p class="text-sm mt-2" data-i18n="empty_cart_desc">حدد المنتجات من مجموعاتنا للاستفسار عنها.</p>
-                </div>
-            </div>
-
-            <!-- Cart Footer / Actions -->
-            <div class="p-6 border-t border-slate-100 bg-slate-50">
-                <p class="text-sm text-slate-500 mb-4 text-center font-medium" data-i18n="send_via">أرسل اختيارك مباشرة إلى فريقنا عبر:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3" dir="ltr">
-                    <a id="cart-wa-1" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        WhatsApp (07755554292)
-                    </a>
-                    <a id="cart-wa-2" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        WhatsApp (07855554292)
-                    </a>
-                </div>
-                <a id="cart-email" href="#" class="w-full flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    <span data-i18n="send_email">إرسال عبر البريد الإلكتروني</span>
+                    <span class="text-[11px] sm:text-xs font-bold text-[#110086] dark:text-blue-400 tracking-tight">+91 96505 63719</span>
                 </a>
             </div>
         </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-6 sm:pt-10">
+        <!-- Hero Section -->
+        <div class="max-w-3xl mb-6 sm:mb-10 text-left relative">
+            <div class="absolute -top-20 -left-20 w-64 h-64 bg-[#110086]/10 dark:bg-blue-600/20 rounded-full blur-[80px] pointer-events-none"></div>
+            <h1 class="text-4xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-2 sm:mb-4 leading-[1.05] relative z-10">
+                Production <br class="sm:hidden" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#110086] to-blue-500 dark:from-blue-400 dark:to-blue-600">Ready.</span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed font-semibold max-w-2xl">
+                Professional cinematography gear rental. Curate your loadout to receive an instant quotation.
+            </p>
+        </div>
+
+        <!-- Sticky Filters & Search -->
+        <div class="sticky top-[56px] sm:top-[64px] z-30 bg-slate-50/95 dark:bg-[#020617]/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 py-3 -mx-3 px-3 sm:mx-0 sm:px-0 sm:bg-transparent sm:dark:bg-transparent sm:backdrop-blur-none sm:border-none sm:py-0">
+            <div class="flex flex-col gap-3 max-w-4xl">
+                
+                <!-- Search -->
+                <div class="relative w-full" id="search-wrapper">
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#110086] dark:group-focus-within:text-blue-500 transition-colors">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="search-input"
+                            placeholder="Search gear (e.g. Ronin 2...)" 
+                            autocomplete="off"
+                            class="w-full bg-white dark:bg-slate-900 border-2 border-transparent text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 sm:py-3 shadow-sm focus:outline-none focus:border-[#110086] dark:focus:border-blue-500 focus:ring-4 focus:ring-[#110086]/10 dark:focus:ring-blue-500/10 transition-all placeholder:text-slate-400/80 placeholder:font-medium"
+                        />
+                    </div>
+                    <!-- Search Dropdown -->
+                    <div id="search-dropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-2xl z-50 max-h-[60vh] overflow-y-auto overflow-hidden flex flex-col">
+                        <!-- Search results injected here via JS -->
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-col gap-3 w-full">
+                    <!-- Main Category Pills -->
+                    <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1" id="category-pills">
+                        <!-- Injected via JS -->
+                    </div>
+
+                    <!-- Subcategory/Brand Pills -->
+                    <div class="hidden items-center gap-3 overflow-x-auto hide-scrollbar pt-2 border-t border-slate-200/50 dark:border-slate-800/50 pb-1" id="subcategory-container">
+                        <span class="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-wider shrink-0" id="subcategory-label">Filter</span>
+                        <div class="flex items-center gap-2" id="subcategory-pills">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory List -->
+        <div id="inventory-container" class="mt-4 sm:mt-8 min-h-[50vh]">
+            <!-- Shimmer Loading Default -->
+            <div class="space-y-3 sm:space-y-4 mt-6 animate-pulse" id="loading-state">
+                <div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl h-12 sm:h-14 w-full overflow-hidden relative">
+                    <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent animate-shimmer"></div>
+                </div>
+                <div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl h-12 sm:h-14 w-full overflow-hidden relative">
+                    <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent animate-shimmer"></div>
+                </div>
+                <div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl h-12 sm:h-14 w-full overflow-hidden relative">
+                    <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent animate-shimmer"></div>
+                </div>
+            </div>
+            
+            <!-- Error State -->
+            <div id="error-state" class="hidden p-6 text-center bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 rounded-2xl font-bold border border-red-100 dark:border-red-900/30 text-sm">
+                Could not load inventory. Please try again later.
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="empty-state" class="hidden py-16 text-center flex flex-col items-center justify-center">
+                <svg class="w-12 h-12 sm:w-16 sm:h-16 text-slate-300 dark:text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <h3 class="text-base sm:text-lg font-bold text-slate-700 dark:text-slate-300 mb-1">No items found</h3>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-5 max-w-sm">We couldn't find any gear matching your current selection. Try adjusting your search or filters.</p>
+                <button onclick="resetFilters()" class="px-4 py-2 bg-[#110086]/10 text-[#110086] dark:bg-blue-500/20 dark:text-blue-400 rounded-lg font-bold text-xs sm:text-sm hover:bg-[#110086]/20 transition-colors">Clear All Filters</button>
+            </div>
+
+            <!-- Dynamic Content -->
+            <div id="categories-wrapper"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8 mt-6 border-t border-slate-200 dark:border-slate-800/50 text-center">
+        
+        <!-- Get in Touch Section -->
+        <div class="mb-8">
+            <h3 class="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">Get in Touch</h3>
+            <div class="flex items-center justify-center space-x-3">
+                <a href="tel:+919650563719" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-slate-500 dark:text-slate-400 hover:text-[#110086] dark:hover:text-blue-400 hover:border-[#110086]/30 dark:hover:border-blue-400/30 transition-all shadow-sm" aria-label="Call Us">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                </a>
+                <a href="https://wa.me/919650563719" target="_blank" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-slate-500 dark:text-slate-400 hover:text-[#25D366] hover:border-[#25D366]/30 transition-all shadow-sm" aria-label="WhatsApp">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+                <a href="mailto:himanshusharma280@gmail.com" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:border-blue-500/30 transition-all shadow-sm" aria-label="Email Us">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]" id="copyright-text"></p>
+        <script>document.getElementById('copyright-text').textContent = `© ${new Date().getFullYear()} POLAR BEAR FILMS PRIVATE LIMITED`;</script>
+    </footer>
+
+    <!-- Checkout Bar (Responsive Desktop & Mobile) -->
+    <div id="checkout-bar" class="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-5 pointer-events-none hidden-bar">
+        <div class="max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 rounded-2xl sm:rounded-3xl shadow-[0_-10px_40px_-10px_rgba(17,0,134,0.15)] dark:shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.5)] p-2.5 sm:p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between sm:gap-4 pointer-events-auto transition-all duration-300">
+            
+            <!-- Mobile Compact Trigger (Always visible on mobile) -->
+            <div class="w-full sm:hidden flex items-center justify-between cursor-pointer px-1.5 py-1" onclick="toggleMobileCheckout()">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-gradient-to-br from-[#110086] to-blue-600 dark:from-blue-500 dark:to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
+                        <span id="mobile-selected-count" class="text-sm font-black text-white">0</span>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="font-extrabold text-xs text-slate-900 dark:text-white leading-tight">Ready for Quote</h4>
+                        <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tap to view options</p>
+                    </div>
+                </div>
+                <div class="p-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 transition-transform duration-300" id="mobile-expand-icon">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
+                </div>
+            </div>
+
+            <!-- Desktop Left Side (Visible only on sm+) -->
+            <div class="hidden sm:flex items-center space-x-3.5 shrink-0">
+                <div class="relative shrink-0">
+                    <div class="w-12 h-12 bg-gradient-to-br from-[#110086] to-blue-600 dark:from-blue-500 dark:to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <span id="selected-count" class="text-xl font-black text-white">0</span>
+                    </div>
+                </div>
+                <div class="text-left">
+                    <h4 class="font-extrabold text-base text-slate-900 dark:text-white leading-tight">Ready for Quote</h4>
+                    <div class="flex items-center justify-start space-x-2.5 mt-0.5">
+                        <button class="view-list-btn text-[11px] font-black text-[#110086] dark:text-blue-400 hover:text-blue-700 transition-colors uppercase tracking-wider underline decoration-[#110086]/30 underline-offset-4">
+                            View List
+                        </button>
+                        <span class="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></span>
+                        <button class="clear-list-btn text-[11px] font-black text-slate-500 hover:text-red-500 transition-colors uppercase tracking-wider">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Expanded Content / Desktop Right Side -->
+            <div id="mobile-expand-section" class="hidden sm:flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 sm:mt-0 sm:pt-0 sm:border-0">
+                
+                <!-- Mobile List Controls -->
+                <div class="flex sm:hidden w-full justify-between items-center px-1 mb-1">
+                    <button class="view-list-btn text-[11px] font-black text-[#110086] dark:text-blue-400 hover:text-blue-700 transition-colors uppercase tracking-wider underline decoration-[#110086]/30 underline-offset-4">
+                        Review Full List
+                    </button>
+                    <button class="clear-list-btn text-[11px] font-black text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider">
+                        Clear All
+                    </button>
+                </div>
+
+                <!-- Shared Action Buttons -->
+                <div class="flex w-full sm:w-auto gap-2 sm:gap-2.5">
+                    <button onclick="handleWhatsAppCheckout()" class="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 sm:py-3.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all active:scale-95 shadow-sm shadow-[#25D366]/20">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+                        <span>WhatsApp</span>
+                    </button>
+                    <button onclick="handleEmailCheckout()" class="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 px-4 py-3 sm:py-3.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all active:scale-95 shadow-sm">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        <span class="sm:hidden">Email</span>
+                        <span class="hidden sm:inline">Email Quote</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Application Logic -->
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+        <div class="absolute inset-0" id="modal-overlay"></div>
+        <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-[1.5rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90vh] sm:max-h-[85vh] overflow-hidden animate-scale-in">
+            <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/50">
+                <div>
+                    <h3 class="font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white tracking-tight">Your Loadout</h3>
+                    <p class="text-[10px] sm:text-xs font-bold text-[#110086] dark:text-blue-400 mt-0.5 uppercase tracking-wider"><span id="modal-count">0</span> Items Selected</p>
+                </div>
+                <button id="close-modal-btn" class="p-2 -mr-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            
+            <div id="modal-item-list" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-2 custom-scrollbar">
+                <!-- Items injected here -->
+            </div>
+            
+            <div id="modal-footer" class="p-4 sm:p-5 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.05)] z-10 hidden">
+                <button id="continue-adding-btn" class="w-full py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-bold transition-colors">
+                    Continue Adding Gear
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- Translation & i18n System ---
-        const translations = {
-            ar: {
-                inquiry: "استفسار",
-                elevating_spaces: "الارتقاء بالمساحات بأسطح فاخرة",
-                hero_desc: "تقدم لك دايموند سيرفيس قمة التصميم والمتانة. مستوحاة من أفضل المعايير العالمية، تم تصميم مجموعتنا الواسعة من الألواح بعناية لتحويل أي بيئة إلى تحفة من الهندسة المعمارية الحديثة.",
-                the_catalog: "الكتالوج",
-                choose_by_size: "اختر حسب الحجم",
-                choose_by_finish: "اختر حسب التشطيب",
-                get_in_touch: "اتصل بنا",
-                ready_to_elevate: "هل أنت مستعد للارتقاء بمساحتك؟ تواصل معنا مباشرة لأي استفسارات أو طلبات جملة أو استشارة.",
-                email: "البريد الإلكتروني",
-                phone: "الهاتف",
-                office: "المكتب",
-                address: "بغداد، الكراده خارج قرب ساحه التحريات",
-                rights: "© 2026 دايموند سيرفيس. جميع الحقوق محفوظة.",
-                inquiry_cart: "عربة الاستفسار",
-                your_inquiry: "استفسارك",
-                empty_cart: "قائمة استفساراتك فارغة.",
-                empty_cart_desc: "حدد المنتجات من مجموعاتنا للاستفسار عنها.",
-                send_via: "أرسل اختيارك مباشرة إلى فريقنا عبر:",
-                send_email: "إرسال عبر البريد الإلكتروني",
-                all: "الكل",
-                all_collections: "جميع المجموعات",
-                all_sizes: "جميع الأحجام",
-                all_finishes: "جميع التشطيبات",
-                loading: "جاري التحميل...",
-                products_count: "منتجات",
-                select_for_inquiry: "اختر للاستفسار",
-                remove_from_inquiry: "إزالة من الاستفسار",
-                size_thickness: "الحجم والسماكة",
-                finish: "التشطيب",
-                subcategory: "الفئة الفرعية",
-                select_category: "اختر الفئة",
-                lang_toggle: "English",
-                wa_prompt: "تواصل معنا بالضغط هنا"
-            },
-            en: {
-                inquiry: "Inquiry",
-                elevating_spaces: "Elevating Spaces with Premium Surfaces",
-                hero_desc: "Diamond Surface brings you the pinnacle of design and durability. Inspired by the finest global standards, our extensive range of Full Body, Colour Body, and GVT slabs are meticulously crafted to transform any environment into a masterpiece of modern architecture.",
-                the_catalog: "The Catalog",
-                choose_by_size: "Choose By Size",
-                choose_by_finish: "Choose By Finish",
-                get_in_touch: "Get in Touch",
-                ready_to_elevate: "Ready to elevate your space? Reach out to us directly for any inquiries, bulk orders, or consultation.",
-                email: "Email",
-                phone: "Phone",
-                office: "Office",
-                address: "Baghdad, Karrada Kharij, near Taharriyat Square",
-                rights: "&copy; 2026 Diamond Surface. All rights reserved.",
-                inquiry_cart: "Inquiry Cart",
-                your_inquiry: "Your Inquiry",
-                empty_cart: "Your inquiry list is empty.",
-                empty_cart_desc: "Select products from our collections to inquire about them.",
-                send_via: "Send your selection directly to our team via:",
-                send_email: "Send via Email",
-                all: "All",
-                all_collections: "All Collections",
-                all_sizes: "All Sizes",
-                all_finishes: "All Finishes",
-                loading: "Loading...",
-                products_count: "Products",
-                select_for_inquiry: "Select for Inquiry",
-                remove_from_inquiry: "Remove from Inquiry",
-                size_thickness: "Size & Thickness",
-                finish: "Finish",
-                subcategory: "Subcategory",
-                select_category: "Select Category",
-                lang_toggle: "عربي",
-                wa_prompt: "Reach out by clicking here"
-            }
+        const DOM = {
+            loadingState: document.getElementById('loading-state'),
+            errorState: document.getElementById('error-state'),
+            emptyState: document.getElementById('empty-state'),
+            categoriesWrapper: document.getElementById('categories-wrapper'),
+            searchInput: document.getElementById('search-input'),
+            searchDropdown: document.getElementById('search-dropdown'),
+            searchWrapper: document.getElementById('search-wrapper'),
+            categoryPills: document.getElementById('category-pills'),
+            subcategoryContainer: document.getElementById('subcategory-container'),
+            subcategoryPills: document.getElementById('subcategory-pills'),
+            subcategoryLabel: document.getElementById('subcategory-label'),
+            checkoutBar: document.getElementById('checkout-bar'),
+            selectedCount: document.getElementById('selected-count'),
+            mobileSelectedCount: document.getElementById('mobile-selected-count'),
+            previewModal: document.getElementById('preview-modal'),
+            modalOverlay: document.getElementById('modal-overlay'),
+            modalCount: document.getElementById('modal-count'),
+            modalItemList: document.getElementById('modal-item-list'),
+            modalFooter: document.getElementById('modal-footer'),
+            themeSun: document.getElementById('theme-icon-sun'),
+            themeMoon: document.getElementById('theme-icon-moon'),
         };
 
-        let currentLang = 'ar';
-        function t(key) {
-            return translations[currentLang][key] || key;
-        }
+        const KNOWN_BRANDS = ['ARRI', 'Sony', 'RED', 'DJI', 'Aputure', 'Cooke', 'Zeiss', 'Astera', 'Nanlite', 'Profoto', 'Canon', 'Blackmagic', 'Oconnor', 'Sachtler', 'Teradek', 'SmallHD', 'Easyrig', 'Sigma', 'Angenieux', 'Leica', 'Tokina', 'Fujinon', 'Kino Flo', 'Litepanels', 'Dedolight', 'Creamsource', 'Quasar', 'Tilta', 'Matthews', 'Cartoni', 'Manfrotto', 'Avenger', 'Inovativ', 'Hollyland', 'Godox', 'Sennheiser', 'Rode', 'Tentacle'];
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            document.documentElement.lang = currentLang;
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            
-            updateStaticText();
-            renderNav();
-            renderProducts();
-            buildCartModalItems();
-            
-            if (currentViewProductIndex !== null) {
-                updateModalCartButton(currentViewProductIndex);
-            }
-        }
+        const state = {
+            inventoryData: [],
+            selected: new Map(), // Map<itemName, {qty, categoryTitle}>
+            expandedCategories: new Set(),
+            activeCategory: 'all',
+            activeSubcategory: 'all',
+            searchQuery: '',
+            isBrandGenerated: false
+        };
 
-        function updateStaticText() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
-                    el.innerHTML = translations[currentLang][key];
-                }
-            });
-            document.getElementById('lang-text').innerText = translations[currentLang].lang_toggle;
-            
-            const headerSocials = document.getElementById('header-socials');
-            
-            if (currentLang === 'ar') {
-                headerSocials.classList.remove('border-r', 'pr-4');
-                headerSocials.classList.add('border-l', 'pl-4');
+        const SHEET_ID = '1_AvwvVEFlmxadelY73dG6u1QP1LCKLzEnz3EzWcvlMQ';
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Live`;
+
+        // --- Theme Management ---
+        function initTheme() {
+            const isDarkStored = localStorage.getItem('theme') === 'dark';
+            const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (isDarkStored || (!localStorage.getItem('theme') && isSystemDark)) {
+                document.documentElement.classList.add('dark');
+                DOM.themeSun.classList.remove('hidden');
+                DOM.themeMoon.classList.add('hidden');
             } else {
-                headerSocials.classList.remove('border-l', 'pl-4');
-                headerSocials.classList.add('border-r', 'pr-4');
+                DOM.themeSun.classList.add('hidden');
+                DOM.themeMoon.classList.remove('hidden');
             }
         }
 
-        let productsData = [];
-        let categories = ["All"];
-        let currentCategory = "All";
-        let sizes = ["All"];
-        let currentSize = "All";
-        let finishes = ["All"];
-        let currentFinish = "All";
-        
-        // Cart State
-        let inquiryCart = []; 
-        let currentViewProductIndex = null;
-
-        const INQUIRY_PHONE_1 = "9647755554292"; 
-        const INQUIRY_PHONE_2 = "9647855554292"; 
-        const INQUIRY_EMAIL = "info@diamondsurface.co";
-
-        // Navigation elements
-        const desktopNav = document.getElementById('desktop-cat-nav');
-        const mobileNav = document.getElementById('mobile-cat-nav');
-        const mainCatPills = document.getElementById('main-cat-pills');
-        const sizeDropdown = document.getElementById('size-dropdown');
-        const finishDropdown = document.getElementById('finish-dropdown');
-        const productGrid = document.getElementById('product-grid');
-        const currentCategoryTitleLarge = document.getElementById('current-category-title-large');
-        const mobileMenuDropdown = document.getElementById('mobile-dropdown');
-
-        function toggleMobileMenu() {
-            mobileMenuDropdown.classList.toggle('dropdown-open');
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            DOM.themeSun.classList.toggle('hidden', !isDark);
+            DOM.themeMoon.classList.toggle('hidden', isDark);
         }
 
-        function closeMobileMenu() {
-            mobileMenuDropdown.classList.remove('dropdown-open');
-        }
-
-        function renderNav() {
-            desktopNav.innerHTML = '';
-            mobileNav.innerHTML = '';
-            if (mainCatPills) mainCatPills.innerHTML = '';
-            
-            categories.forEach(cat => {
-                const displayCat = cat === "All" ? t("all") : cat;
-
-                // Desktop Link inside Header
-                const aDesk = document.createElement('a');
-                aDesk.href = "#collections";
-                aDesk.className = `nav-link flex-shrink-0 cursor-pointer transition whitespace-nowrap pb-1 ${currentCategory === cat ? 'active text-[#138A8E] border-b-2 border-[#138A8E]' : 'text-slate-500 hover:text-[#138A8E] border-b-2 border-transparent'}`;
-                aDesk.innerText = displayCat;
-                aDesk.onclick = (e) => { 
-                    e.preventDefault(); 
-                    setCategory(cat); 
-                    scrollToCollections(true); // Jump down explicitly
-                };
-                desktopNav.appendChild(aDesk);
-
-                // Mobile Header Dropdown Item
-                const aMobile = document.createElement('a');
-                aMobile.href = "#collections";
-                aMobile.className = `block px-6 py-4 border-b border-slate-200 text-sm font-bold tracking-widest uppercase transition ${currentCategory === cat ? 'bg-[#138A8E]/10 text-[#138A8E]' : 'text-slate-500 hover:bg-slate-50 hover:text-[#138A8E]'}`;
-                aMobile.innerText = displayCat;
-                aMobile.onclick = (e) => { 
-                    e.preventDefault(); 
-                    setCategory(cat); 
-                    closeMobileMenu(); 
-                    scrollToCollections(true); // Jump down explicitly
-                };
-                mobileNav.appendChild(aMobile);
-
-                // Main Category Pills (Sticky Catalog section)
-                if (mainCatPills) {
-                    const btnMain = document.createElement('button');
-                    btnMain.className = `px-5 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentCategory === cat ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-300 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
-                    btnMain.innerText = displayCat;
-                    btnMain.onclick = () => {
-                        setCategory(cat);
-                        scrollToCollections();
-                    };
-                    mainCatPills.appendChild(btnMain);
-                }
-            });
-            
-            if(currentCategoryTitleLarge) {
-                currentCategoryTitleLarge.innerText = currentCategory === "All" ? t("all_collections") : currentCategory;
+        // --- CSV Parsing ---
+        function parseCSV(text) {
+            const rows = [];
+            let row = [];
+            let cur = '';
+            let inQuote = false;
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                let next = text[i + 1];
+                if (char === '"' && inQuote && next === '"') { cur += '"'; i++; }
+                else if (char === '"') { inQuote = !inQuote; }
+                else if (char === ',' && !inQuote) { row.push(cur.trim()); cur = ''; }
+                else if ((char === '\r' || char === '\n') && !inQuote) {
+                    row.push(cur.trim());
+                    if (row.length > 0) rows.push(row);
+                    row = []; cur = '';
+                    if (char === '\r' && next === '\n') i++;
+                } else { cur += char; }
             }
-            
-            renderSizeNav();
-            renderFinishNav();
+            if (cur !== '' || row.length > 0) { row.push(cur.trim()); rows.push(row); }
+            return rows;
         }
 
-        function renderSizeNav() {
-            if (!sizeDropdown) return;
-            sizeDropdown.innerHTML = '';
-            
-            const availableProducts = currentCategory === "All" 
-                ? productsData 
-                : productsData.filter(p => p.category === currentCategory);
+        // --- Data Fetching ---
+        async function fetchInventory() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error('Failed to fetch data');
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
                 
-            sizes = ["All", ...new Set(availableProducts.map(p => p.size).filter(s => s))];
-            
-            if (!sizes.includes(currentSize)) {
-                currentSize = "All";
-            }
+                if (rows.length < 2) throw new Error('Empty dataset');
 
-            sizes.forEach(size => {
-                const displaySize = size === "All" ? t("all_sizes") : size;
-                const option = document.createElement('option');
-                option.value = size;
-                option.innerText = displaySize;
-                // English measurement strings shouldn't get completely flipped, but dropdown handles it well. 
-                // We'll leave dir default for options so Arabic fits properly.
-                if (size === currentSize) option.selected = true;
-                sizeDropdown.appendChild(option);
-            });
-        }
-
-        function renderFinishNav() {
-            if (!finishDropdown) return;
-            finishDropdown.innerHTML = '';
-            
-            // Extract available finishes for current category
-            const availableProducts = currentCategory === "All" 
-                ? productsData 
-                : productsData.filter(p => p.category === currentCategory);
+                const headers = rows[0].map(h => h.toLowerCase().trim());
+                const catIdx = headers.indexOf('category');
+                const descIdx = headers.indexOf('description');
+                const qtyIdx = headers.indexOf('qty');
                 
-            finishes = ["All", ...new Set(availableProducts.map(p => p.finish).filter(f => f))];
-            
-            // If current finish is no longer available in this category, reset to All
-            if (!finishes.includes(currentFinish)) {
-                currentFinish = "All";
-            }
+                // Identify if a dedicated subcategory column exists
+                const subcatIdx = headers.findIndex(h => h.includes('subcategory') || h.includes('sub category') || h.includes('brand'));
+                state.isBrandGenerated = subcatIdx === -1; // If -1, we auto-generate brands
 
-            finishes.forEach(fin => {
-                const displayFin = fin === "All" ? t("all_finishes") : fin;
-                const option = document.createElement('option');
-                option.value = fin;
-                option.innerText = displayFin;
-                if (fin === currentFinish) option.selected = true;
-                finishDropdown.appendChild(option);
-            });
-        }
+                const groups = {};
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row || row.length <= Math.max(catIdx, descIdx)) continue;
+                    const category = row[catIdx];
+                    const name = row[descIdx];
+                    const qty = (qtyIdx !== -1 && row[qtyIdx]) ? row[qtyIdx] : '1';
 
-        function renderProducts() {
-            productGrid.innerHTML = '';
-            
-            let filteredProducts = productsData;
-            
-            if (currentCategory !== "All") {
-                filteredProducts = filteredProducts.filter(p => p.category === currentCategory);
-            }
-            if (currentSize !== "All") {
-                filteredProducts = filteredProducts.filter(p => p.size === currentSize);
-            }
-            if (currentFinish !== "All") {
-                filteredProducts = filteredProducts.filter(p => p.finish === currentFinish);
-            }
+                    if (category && name && isNaN(category)) {
+                        
+                        // Extract Subcategory/Brand
+                        let subcategory = 'Other';
+                        if (subcatIdx !== -1 && row[subcatIdx]) {
+                            // Trim and standardize whitespace to avoid duplicate pills
+                            subcategory = row[subcatIdx].trim().replace(/\s+/g, ' ');
+                        } else if (state.isBrandGenerated) {
+                            const upperName = name.toUpperCase();
+                            const foundBrand = KNOWN_BRANDS.find(b => upperName.includes(b.toUpperCase()));
+                            if (foundBrand) subcategory = foundBrand;
+                        }
 
-            document.getElementById('product-count').innerText = `${filteredProducts.length} ${t('products_count')}`;
-
-            filteredProducts.forEach((product) => {
-                const isSelected = inquiryCart.some(item => item.id === product.id);
-                const displaySize = product.thickness ? `${product.size}-${product.thickness}` : product.size;
-
-                const card = document.createElement('div');
-                card.className = `product-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full relative group ${isSelected ? 'selected' : ''}`;
-                
-                // Adjust selected styling color
-                if(isSelected) {
-                    card.style.borderColor = '#138A8E';
-                    card.style.boxShadow = '0 0 0 2px rgba(19, 138, 142, 0.2)';
-                } else {
-                    card.style.borderColor = '';
-                    card.style.boxShadow = '';
+                        if (!groups[category]) {
+                            groups[category] = {
+                                id: category.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                                title: category,
+                                items: []
+                            };
+                        }
+                        groups[category].items.push({ name, qty, subcategory });
+                    }
                 }
                 
-                card.innerHTML = `
-                    <div class="product-image-container relative bg-slate-100" onclick="openProductModal(${product.id})">
-                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover" loading="lazy">
-                        <div class="absolute inset-0 bg-[#138A8E]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    </div>
-                    
-                    <button onclick="toggleCartItem(${product.id}, event)" class="absolute top-3 rtl:left-3 ltr:right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center transition shadow-md border ${isSelected ? 'bg-[#D98835] border-[#B25725] text-white' : 'bg-white/90 border-slate-200 text-slate-400 hover:text-[#D98835] backdrop-blur-sm'}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${isSelected ? '3' : '2'}" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-                    </button>
+                state.inventoryData = Object.values(groups);
+                DOM.loadingState.classList.add('hidden');
+                
+                renderFilters();
+                renderInventory();
 
-                    <div class="p-4 md:p-6 flex-grow flex flex-col justify-between" onclick="openProductModal(${product.id})">
-                        <div>
-                            <p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">${product.category}</p>
-                            <h3 class="text-sm md:text-lg font-bold tracking-wide mb-2 leading-tight text-slate-900">${product.name}</h3>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1 text-slate-600">
-                            <p class="text-xs md:text-sm flex justify-between items-center"><span class="text-slate-400 font-medium tracking-wide">${t("size_thickness")}</span> <span class="font-bold text-slate-800" dir="ltr">${displaySize}</span></p>
-                            <p class="text-xs md:text-sm flex justify-between items-center"><span class="text-slate-400 font-medium tracking-wide">${t("finish")}</span> <span class="font-bold text-slate-800">${product.finish}</span></p>
-                        </div>
-                    </div>
-                `;
-                productGrid.appendChild(card);
+            } catch (err) {
+                console.error("Error fetching inventory:", err);
+                DOM.loadingState.classList.add('hidden');
+                DOM.errorState.classList.remove('hidden');
+            }
+        }
+
+        // --- Filters Generation (Pills) ---
+        function renderFilters() {
+            // Render Main Category Pills
+            let catHtml = `<button onclick="setActiveCategory('all')" class="pill-btn ${state.activeCategory === 'all' ? 'pill-active' : 'pill-inactive'}">All Collections</button>`;
+            state.inventoryData.forEach(cat => {
+                catHtml += `<button onclick="setActiveCategory('${cat.id}')" class="pill-btn ${state.activeCategory === cat.id ? 'pill-active' : 'pill-inactive'}">${cat.title}</button>`;
             });
-        }
+            DOM.categoryPills.innerHTML = catHtml;
 
-        function setCategory(cat) {
-            currentCategory = cat;
-            currentSize = "All";
-            currentFinish = "All";
-            renderNav();
-            renderProducts();
-        }
+            // Compute available subcategories for the current view and search query
+            const normalizedQuery = state.searchQuery.toLowerCase().replace(/\s+/g, '');
+            const subcatMap = new Map(); // Use Map to group by case-insensitive name to avoid duplicates
 
-        function setSize(size) {
-            currentSize = size;
-            renderProducts();
-            scrollToCollections(); 
-        }
-
-        function setFinish(fin) {
-            currentFinish = fin;
-            renderProducts();
-            scrollToCollections(); 
-        }
-
-        function scrollToCollections(force = false) {
-            const collectionsEl = document.getElementById('collections');
-            const stickyOffset = 130; 
-            // scroll if forced (e.g clicked from top header) or if the user is already below the catalog top
-            if(force || window.scrollY > collectionsEl.offsetTop - 50 || window.scrollY < collectionsEl.offsetTop - stickyOffset) {
-                 window.scrollTo({ top: collectionsEl.offsetTop - stickyOffset, behavior: 'smooth' });
-            }
-        }
-
-        // Cart Logic
-        function toggleCartItem(productId, event) {
-            if(event) event.stopPropagation(); 
-
-            const product = productsData.find(p => p.id === productId);
-            const index = inquiryCart.findIndex(item => item.id === productId);
-            
-            if (index > -1) {
-                inquiryCart.splice(index, 1);
-            } else {
-                inquiryCart.push(product);
-            }
-            
-            updateCartUI();
-            renderProducts(); 
-            updateModalCartButton(productId);
-        }
-
-        function updateCartUI() {
-            const count = inquiryCart.length;
-            document.getElementById('header-cart-count').innerText = count;
-            document.getElementById('fab-cart-count').innerText = count;
-
-            if(count > 0) {
-                document.getElementById('fab-cart').classList.remove('translate-y-24', 'opacity-0');
-            } else {
-                document.getElementById('fab-cart').classList.add('translate-y-24', 'opacity-0');
-            }
-            buildCartModalItems();
-        }
-
-        function buildCartModalItems() {
-            const container = document.getElementById('cart-items-container');
-            const emptyMsg = document.getElementById('empty-cart-msg');
-            
-            Array.from(container.children).forEach(child => {
-                if(child.id !== 'empty-cart-msg') child.remove();
+            state.inventoryData.forEach(cat => {
+                if (state.activeCategory === 'all' || cat.id === state.activeCategory) {
+                    cat.items.forEach(item => {
+                        const matchesSearch = !state.searchQuery || item.name.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery);
+                        if(matchesSearch && item.subcategory && item.subcategory.toLowerCase() !== 'other') {
+                            const lowerSub = item.subcategory.toLowerCase();
+                            if(!subcatMap.has(lowerSub)) {
+                                subcatMap.set(lowerSub, item.subcategory); // Store original case
+                            }
+                        }
+                    });
+                }
             });
 
-            if (inquiryCart.length === 0) {
-                emptyMsg.style.display = 'block';
+            const subcatArray = Array.from(subcatMap.values()).sort();
+
+            // Render Subcategory/Brand Pills if they exist
+            if (subcatArray.length > 0) {
+                DOM.subcategoryContainer.classList.remove('hidden');
+                DOM.subcategoryContainer.classList.add('flex');
+                DOM.subcategoryLabel.textContent = state.isBrandGenerated ? 'Brand' : 'Filter';
+                
+                let subHtml = `<button onclick="setActiveSubcategory('all')" class="pill-btn ${state.activeSubcategory === 'all' ? 'pill-active' : 'pill-inactive'}">All</button>`;
+                subcatArray.forEach(sub => {
+                    const isActive = state.activeSubcategory.toLowerCase() === sub.toLowerCase();
+                    subHtml += `<button onclick="setActiveSubcategory('${sub}')" class="pill-btn ${isActive ? 'pill-active' : 'pill-inactive'}">${sub}</button>`;
+                });
+                DOM.subcategoryPills.innerHTML = subHtml;
+            } else {
+                DOM.subcategoryContainer.classList.add('hidden');
+                DOM.subcategoryContainer.classList.remove('flex');
+            }
+        }
+
+        window.setActiveCategory = function(catId) {
+            state.activeCategory = catId;
+            state.activeSubcategory = 'all'; // Reset sub-filter when changing parent
+            if (catId !== 'all') state.expandedCategories.add(catId);
+            renderFilters();
+            renderInventory();
+            
+            if (catId !== 'all' && !state.searchQuery) {
+                const target = document.getElementById(`cat-${catId}`);
+                if (target) {
+                    setTimeout(() => {
+                        window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 160, behavior: 'smooth' });
+                    }, 50);
+                }
+            }
+        }
+
+        window.setActiveSubcategory = function(subcat) {
+            state.activeSubcategory = subcat;
+            renderFilters();
+            renderInventory();
+        }
+
+        // --- Rendering Core ---
+        function renderInventory() {
+            const normalizedQuery = state.searchQuery.toLowerCase().replace(/\s+/g, '');
+            
+            const filteredData = state.inventoryData
+                .filter(cat => state.activeCategory === 'all' || cat.id === state.activeCategory)
+                .map(cat => {
+                    const filteredItems = cat.items.filter(item => {
+                        const matchesSearch = !state.searchQuery || item.name.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery);
+                        const matchesSubcat = state.activeSubcategory === 'all' || item.subcategory.toLowerCase() === state.activeSubcategory.toLowerCase();
+                        return matchesSearch && matchesSubcat;
+                    });
+                    return { ...cat, items: filteredItems };
+                })
+                .filter(cat => cat.items.length > 0);
+
+            if (filteredData.length === 0) {
+                DOM.categoriesWrapper.innerHTML = '';
+                DOM.emptyState.classList.remove('hidden');
                 return;
             }
-            
-            emptyMsg.style.display = 'none';
 
-            inquiryCart.forEach(item => {
-                const displaySize = item.thickness ? `${item.size} - ${item.thickness}` : item.size;
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-100";
-                div.innerHTML = `
-                    <div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-white border border-slate-200">
-                        <img src="${item.image}" class="w-full h-full object-cover">
+            DOM.emptyState.classList.add('hidden');
+            DOM.categoriesWrapper.innerHTML = filteredData.map(cat => {
+                const isExpanded = state.expandedCategories.has(cat.id);
+                const allSelected = cat.items.every(item => state.selected.has(item.name));
+                
+                return `
+                <section class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800/60 overflow-hidden mb-3 sm:mb-4 transition-all duration-300 hover:shadow-md" id="cat-${cat.id}">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between p-3 sm:p-4 cursor-pointer select-none group bg-slate-50/50 dark:bg-slate-800/20 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors" onclick="toggleExpansion('${cat.id}')">
+                        <div class="flex items-center space-x-2.5 sm:space-x-3 flex-1 min-w-0 pr-3">
+                            <div class="p-1 sm:p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-[#110086]/10 dark:group-hover:bg-blue-500/20 group-hover:text-[#110086] dark:group-hover:text-blue-400 transition-all duration-300 ${isExpanded ? 'rotate-180 bg-[#110086]/10 text-[#110086] dark:bg-blue-500/20 dark:text-blue-400' : ''}">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white break-words tracking-tight">${cat.title}</h3>
+                                <div class="flex items-center space-x-2 mt-0.5">
+                                    <span class="text-[9px] sm:text-[11px] font-black text-slate-400 uppercase tracking-wider">${cat.items.length} Items</span>
+                                    ${(state.searchQuery || state.activeSubcategory !== 'all') ? '<span class="text-[9px] bg-brand/10 text-brand px-1 rounded">Filtered</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="handleSelectAll(event, '${cat.id}')" class="relative z-10 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-200 active:scale-95 whitespace-nowrap overflow-hidden ${allSelected ? 'bg-[#110086] text-white border-transparent shadow-sm shadow-[#110086]/20' : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-[#110086]/50 dark:hover:border-blue-500/50'}">
+                            ${allSelected ? 'Clear All' : 'Select All'}
+                        </button>
                     </div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-slate-900 text-sm">${item.name}</h4>
-                        <p class="text-xs text-slate-500 font-medium" dir="ltr">${displaySize} | ${item.finish}</p>
+
+                    <!-- Grid Content -->
+                    <div class="category-content ${isExpanded ? 'expanded' : ''}">
+                        <div class="p-3 sm:p-4 pt-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 bg-slate-50/20 dark:bg-transparent">
+                            ${cat.items.map((item, idx) => {
+                                const isSelected = state.selected.has(item.name);
+                                // Escape strings for inline handlers
+                                const escapedName = item.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                                const escapedCat = cat.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                                
+                                return `
+                                <div onclick="toggleItem('${escapedName}', '${item.qty}', '${escapedCat}')" class="relative group flex items-start sm:items-center justify-between p-2 sm:p-2.5 h-full rounded-xl border-2 transition-all duration-200 cursor-pointer select-none ${isSelected ? 'bg-blue-50/50 dark:bg-blue-900/20 border-[#110086] dark:border-blue-500 shadow-sm' : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-[#110086]/30 dark:hover:border-blue-500/40 hover:shadow-sm'}">
+                                    <div class="flex items-start sm:items-center space-x-2 sm:space-x-2.5 flex-1 min-w-0">
+                                        <div class="flex-shrink-0 w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 mt-0.5 sm:mt-0 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected ? 'border-[#110086] dark:border-blue-500 bg-[#110086] dark:bg-blue-500 text-white' : 'border-slate-300 dark:border-slate-600 group-hover:border-[#110086]/50 dark:group-hover:border-blue-500/50'}">
+                                            <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 transition-transform duration-300 ${isSelected ? 'scale-100' : 'scale-0'}" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                                        </div>
+                                        <span class="text-xs sm:text-sm font-bold leading-snug break-words transition-colors ${isSelected ? 'text-[#110086] dark:text-blue-100' : 'text-slate-700 dark:text-slate-200'}">
+                                            ${item.name}
+                                        </span>
+                                    </div>
+                                    ${item.qty && item.qty !== '1' ? `<div class="ml-1.5 sm:ml-2 mt-0.5 sm:mt-0 flex-shrink-0 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400">x${item.qty}</div>` : ''}
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
-                    <button onclick="toggleCartItem(${item.id})" class="p-2 text-slate-400 hover:text-red-500 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    </button>
+                </section>
                 `;
-                container.appendChild(div);
-            });
-
-            updateCartLinks();
+            }).join('');
         }
 
-        function updateCartLinks() {
-            if(inquiryCart.length === 0) return;
-
-            let msg = "Hello Diamond Surface! I am interested in inquiring about the following tiles:%0A%0A";
-            inquiryCart.forEach((item, index) => {
-                const displaySize = item.thickness ? `${item.size}-${item.thickness}` : item.size;
-                msg += `${index + 1}. *${item.name}*%0A   Size: ${displaySize}%0A   Finish: ${item.finish}%0A%0A`;
-            });
-
-            document.getElementById('cart-wa-1').href = `https://wa.me/${INQUIRY_PHONE_1}?text=${msg}`;
-            document.getElementById('cart-wa-2').href = `https://wa.me/${INQUIRY_PHONE_2}?text=${msg}`;
-            document.getElementById('cart-email').href = `mailto:${INQUIRY_EMAIL}?subject=Bulk Enquiry: ${inquiryCart.length} Tiles&body=${msg.replace(/%0A/g, '%0D%0A')}`;
+        // --- Interaction Handlers ---
+        window.resetFilters = function() {
+            state.activeCategory = 'all';
+            state.activeSubcategory = 'all';
+            state.searchQuery = '';
+            DOM.searchInput.value = '';
+            renderFilters();
+            renderInventory();
         }
 
-        function openCart() {
-            document.getElementById('cart-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeCart() {
-            document.getElementById('cart-modal').classList.remove('active');
-            document.body.style.overflow = ''; 
-        }
-
-        // Product Modal Functions
-        function openProductModal(productId) {
-            currentViewProductIndex = productId;
-            const product = productsData.find(p => p.id === productId);
-            const displaySize = product.thickness ? `${product.size} - ${product.thickness}` : product.size;
-            
-            document.getElementById('modal-image').src = product.image;
-            document.getElementById('modal-category').innerText = product.category;
-            document.getElementById('modal-title').innerText = product.name;
-            document.getElementById('modal-size').innerText = displaySize;
-            document.getElementById('modal-finish').innerText = product.finish;
-            document.getElementById('modal-sub').innerText = product.subcategory;
-
-            updateModalCartButton(productId);
-
-            document.getElementById('product-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function updateModalCartButton(productId) {
-            const btn = document.getElementById('modal-add-cart-btn');
-            const txt = document.getElementById('modal-add-cart-text');
-            const isSelected = inquiryCart.some(item => item.id === productId);
-            
-            if(isSelected) {
-                btn.className = "w-full flex items-center justify-center gap-2 bg-[#138A8E] hover:bg-[#094F52] text-white py-4 px-6 rounded-xl font-bold uppercase tracking-widest transition shadow-lg text-sm";
-                txt.innerText = t("remove_from_inquiry");
+        window.toggleExpansion = function(catId) {
+            if (state.expandedCategories.has(catId)) {
+                state.expandedCategories.delete(catId);
             } else {
-                btn.className = "w-full flex items-center justify-center gap-2 bg-[#D98835] hover:bg-[#B25725] text-white py-4 px-6 rounded-xl font-bold uppercase tracking-widest transition shadow-lg text-sm";
-                txt.innerText = t("select_for_inquiry");
+                state.expandedCategories.add(catId);
             }
+            renderInventory();
         }
 
-        function toggleCartFromModal() {
-            if(currentViewProductIndex !== null) {
-                toggleCartItem(currentViewProductIndex);
-            }
-        }
-
-        function closeProductModal() {
-            document.getElementById('product-modal').classList.remove('active');
-            document.body.style.overflow = ''; 
-            currentViewProductIndex = null;
-        }
-
-        // Fetch Data from Google Sheets
-        function initData() {
-            const sheetUrl = "https://docs.google.com/spreadsheets/d/1Q0xNBGSpXFOLuo5htMYFXtwhTPkdYe6ALl7Y8eFldEk/export?format=csv";
+        window.handleSelectAll = function(e, catId) {
+            e.stopPropagation(); // Stop expansion toggle
             
-            Papa.parse(sheetUrl, {
-                download: true,
-                header: true,
-                complete: function(results) {
-                    const data = results.data;
-                    
-                    productsData = data.filter(row => row["Category"] && row["Image Link"]).map((row, index) => ({
-                        id: index, // unique identifier for cart logic
-                        category: row["Category"] || "",
-                        size: row["Tile Size"] || "",
-                        thickness: row["Tile Thickness"] || "",
-                        name: row["Tile Body"] || row["Tile Name"] || "Unnamed Collection",
-                        finish: row["Tile Finish"] || "",
-                        subcategory: row["Subcategory"] || "",
-                        image: row["Image Link"] || ""
-                    }));
+            // Find category
+            const category = state.inventoryData.find(c => c.id === catId);
+            if (!category) return;
+            
+            // Filter by search/subcategory query to respect current view
+            const normalizedQuery = state.searchQuery.toLowerCase().replace(/\s+/g, '');
+            const visibleItems = category.items.filter(item => {
+                const matchesSearch = !state.searchQuery || item.name.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery);
+                const matchesSubcat = state.activeSubcategory === 'all' || item.subcategory === state.activeSubcategory;
+                return matchesSearch && matchesSubcat;
+            });
 
-                    categories = ["All", ...new Set(productsData.map(p => p.category))];
-                    
-                    updateStaticText(); // Initialize Arabic Default UI
-                    renderNav();
-                    renderProducts();
-                    updateCartUI(); // Init FAB state
-                },
-                error: function(err) {
-                    console.error("Failed to fetch Google Sheet data:", err);
-                    document.getElementById('product-count').innerText = "Error loading products.";
+            const allSelected = visibleItems.every(item => state.selected.has(item.name));
+            
+            visibleItems.forEach(item => {
+                if (allSelected) {
+                    state.selected.delete(item.name);
+                } else {
+                    state.selected.set(item.name, { qty: item.qty, categoryTitle: category.title });
                 }
             });
+
+            updateCheckoutBar();
+            renderInventory();
         }
 
-        // Initialize App Fetch
-        initData();
+        window.toggleItem = function(name, qty, categoryTitle) {
+            if (state.selected.has(name)) {
+                state.selected.delete(name);
+            } else {
+                state.selected.set(name, { qty, categoryTitle });
+            }
+            updateCheckoutBar();
+            renderInventory();
+        }
 
-        // GSAP Animation Logic
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(ScrollTrigger);
+        window.toggleMobileCheckout = function() {
+            const section = document.getElementById('mobile-expand-section');
+            const icon = document.getElementById('mobile-expand-icon');
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                section.classList.add('flex');
+                icon.classList.add('rotate-180');
+            } else {
+                section.classList.add('hidden');
+                section.classList.remove('flex');
+                icon.classList.remove('rotate-180');
+            }
+        }
 
-            const video = document.getElementById("bg-video");
-            if (video) {
-                video.muted = true;
-                video.defaultMuted = true;
-                const attemptPlay = () => {
-                    video.play().catch(e => {
-                        window.addEventListener('touchstart', () => video.play(), { once: true });
-                        window.addEventListener('scroll', () => video.play(), { once: true });
-                    });
-                };
-                attemptPlay();
+        function updateCheckoutBar() {
+            const count = state.selected.size;
+            
+            // Text updates
+            if (DOM.selectedCount) DOM.selectedCount.textContent = count;
+            if (DOM.mobileSelectedCount) DOM.mobileSelectedCount.textContent = count;
+
+            // Show/Hide Floating Bar
+            if (count > 0) {
+                DOM.checkoutBar.classList.remove('hidden-bar');
+                DOM.checkoutBar.classList.add('visible-bar');
+            } else {
+                DOM.checkoutBar.classList.add('hidden-bar');
+                DOM.checkoutBar.classList.remove('visible-bar');
+                
+                // Auto close on mobile if emptied
+                const section = document.getElementById('mobile-expand-section');
+                const icon = document.getElementById('mobile-expand-icon');
+                if (section && !section.classList.contains('hidden')) {
+                    section.classList.add('hidden');
+                    section.classList.remove('flex');
+                    if (icon) icon.classList.remove('rotate-180');
+                }
+            }
+        }
+
+        // --- Search Handling ---
+        DOM.searchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            state.searchQuery = val;
+            
+            // Re-render filters to hide empty subcategories
+            renderFilters();
+
+            if (!val.trim()) {
+                DOM.searchDropdown.classList.add('hidden');
+                renderInventory();
+                return;
             }
 
-            const tl = gsap.timeline();
-
-            tl.from(".gsap-header", {
-                y: -50,
-                opacity: 0,
-                duration: 1.2,
-                ease: "power3.out"
-            });
+            const normalizedQuery = val.toLowerCase().replace(/\s+/g, '');
+            const matches = [];
             
-            // Fade hero slightly on scroll
-            gsap.to(".hero-section", {
-                scrollTrigger: {
-                    trigger: ".hero-section",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                },
-                opacity: 0.4,
+            state.inventoryData.forEach(cat => {
+                cat.items.forEach(item => {
+                    if (item.name.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery)) {
+                        matches.push({ ...item, categoryTitle: cat.title, catId: cat.id });
+                    }
+                });
+            });
+
+            if (matches.length > 0) {
+                DOM.searchDropdown.classList.remove('hidden');
+                let html = `
+                    <div class="px-3 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center sticky top-0 z-10 backdrop-blur-md">
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Results for "${val}"</span>
+                        <span class="text-[9px] sm:text-[10px] font-black bg-[#110086]/10 dark:bg-blue-500/20 text-[#110086] dark:text-blue-400 px-2 py-0.5 rounded-full">${matches.length}</span>
+                    </div>
+                    <div class="py-1.5">
+                `;
+                
+                html += matches.slice(0, 15).map((match, idx) => {
+                    const escapedName = match.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const escapedCat = match.categoryTitle.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    return `
+                    <button onclick="handleSearchSelect('${escapedName}', '${match.qty}', '${escapedCat}', '${match.catId}')" class="w-full text-left px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between transition-colors border-b border-slate-50 dark:border-slate-800/30 last:border-0">
+                        <div class="min-w-0 pr-3">
+                            <p class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 break-words">${match.name}</p>
+                            <p class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase mt-0.5 tracking-wide">${match.categoryTitle}</p>
+                        </div>
+                        <div class="shrink-0 text-[9px] sm:text-[10px] font-black text-[#110086] dark:text-blue-400 bg-[#110086]/5 dark:bg-blue-500/10 px-2 py-1 rounded">
+                            SELECT
+                        </div>
+                    </button>
+                    `;
+                }).join('');
+
+                if(matches.length > 15) {
+                    html += `<div class="px-4 py-3 text-center text-[11px] sm:text-xs font-bold text-slate-400">+ ${matches.length - 15} more. Keep typing.</div>`;
+                }
+                
+                html += '</div>';
+                DOM.searchDropdown.innerHTML = html;
+            } else {
+                DOM.searchDropdown.innerHTML = '<div class="px-4 py-6 text-center text-slate-400 text-xs sm:text-sm font-medium">No gear found matching this search.</div>';
+                DOM.searchDropdown.classList.remove('hidden');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!DOM.searchWrapper.contains(e.target)) {
+                DOM.searchDropdown.classList.add('hidden');
+            }
+        });
+
+        DOM.searchInput.addEventListener('focus', () => {
+            if(state.searchQuery.trim() && DOM.searchDropdown.innerHTML !== '') {
+                DOM.searchDropdown.classList.remove('hidden');
+            }
+        });
+
+        window.handleSearchSelect = function(name, qty, categoryTitle, catId) {
+            state.expandedCategories.add(catId);
+            
+            // Adjust filters to match selected item
+            setActiveCategory(catId);
+            
+            if (!state.selected.has(name)) {
+                state.selected.set(name, { qty, categoryTitle });
+                updateCheckoutBar();
+            }
+            
+            DOM.searchDropdown.classList.add('hidden');
+            DOM.searchInput.value = '';
+            state.searchQuery = '';
+            renderInventory();
+
+            setTimeout(() => {
+                const el = document.getElementById(`cat-${catId}`);
+                if (el) {
+                    const y = el.getBoundingClientRect().top + window.pageYOffset - 160;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+
+        // --- Modal Handling ---
+        function openPreviewModal() {
+            DOM.modalCount.textContent = state.selected.size;
+            
+            if (state.selected.size === 0) {
+                DOM.modalItemList.innerHTML = `
+                    <div class="text-center py-10 px-4 flex flex-col items-center">
+                        <div class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-300 dark:text-slate-600 mb-3 sm:mb-4">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-xs sm:text-sm">Your loadout is empty.<br/>Select items to request a quote.</p>
+                    </div>
+                `;
+                DOM.modalFooter.classList.add('hidden');
+            } else {
+                DOM.modalItemList.innerHTML = Array.from(state.selected.entries()).map(([name, detail]) => {
+                    const escapedName = name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const escapedCat = detail.categoryTitle.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    return `
+                    <div class="group flex items-center justify-between p-2.5 sm:p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl sm:rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+                        <div class="min-w-0 pr-3 sm:pr-4">
+                            <p class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">${name}</p>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <span class="text-[9px] sm:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase">QTY: ${detail.qty}</span>
+                                <span class="text-[9px] sm:text-[10px] font-black text-[#110086]/60 dark:text-blue-400/60 uppercase">• ${detail.categoryTitle}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeItemFromModal('${escapedName}', '${escapedCat}')" class="p-2 sm:p-2.5 text-red-500/70 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                    </div>
+                `}).join('');
+                DOM.modalFooter.classList.remove('hidden');
+            }
+            
+            DOM.previewModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closePreviewModal() {
+            DOM.previewModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        window.removeItemFromModal = function(name, categoryTitle) {
+            toggleItem(name, null, categoryTitle);
+            openPreviewModal(); // refresh modal content
+            if(state.selected.size === 0) {
+                closePreviewModal();
+            }
+        }
+
+        // Attach event listeners for all dynamically appearing review/clear buttons
+        document.querySelectorAll('.view-list-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openPreviewModal();
             });
         });
+
+        document.querySelectorAll('.clear-list-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                state.selected.clear();
+                updateCheckoutBar();
+                renderInventory();
+                closePreviewModal();
+            });
+        });
+
+        DOM.closeModalBtn = document.getElementById('close-modal-btn');
+        DOM.continueAddingBtn = document.getElementById('continue-adding-btn');
+
+        DOM.closeModalBtn.addEventListener('click', closePreviewModal);
+        DOM.continueAddingBtn.addEventListener('click', closePreviewModal);
+        DOM.modalOverlay.addEventListener('click', closePreviewModal);
+
+        // --- Communication Logic ---
+        function generateListString(isHtml = false) {
+            const separator = isHtml ? '%0D%0A' : '%0A';
+            const result = [];
+
+            // Sort categories alphabetically to maintain consistent order
+            const sortedCategories = [...state.inventoryData].sort((a, b) => a.title.localeCompare(b.title));
+
+            for (const category of sortedCategories) {
+                // Find selected items belonging to this specific category
+                const selectedInCategory = category.items.filter(item => state.selected.has(item.name));
+                
+                if (selectedInCategory.length === 0) continue;
+
+                result.push(`*${category.title}*`);
+                
+                // If the number of selected items matches the total items in the category
+                if (selectedInCategory.length === category.items.length) {
+                    result.push(`  • All`);
+                } else {
+                    // Otherwise, list them out individually
+                    selectedInCategory.forEach(item => {
+                        const detail = state.selected.get(item.name);
+                        result.push(`  • ${item.name} (x${detail.qty})`);
+                    });
+                }
+                result.push(''); // blank line spacing
+            }
+            
+            return result.join(separator).trim();
+        }
+
+        window.handleWhatsAppCheckout = function() {
+            if (state.selected.size === 0) return;
+            const list = generateListString(false);
+            const message = `*Polar Bear Films - Gear Inquiry*%0A%0AHello Himanshu, I'm interested in renting the following items:%0A%0A${list}%0A%0APlease share availability and a quote.`;
+            window.open(`https://wa.me/919650563719?text=${message}`, '_blank');
+        }
+
+        window.handleEmailCheckout = function() {
+            if (state.selected.size === 0) return;
+            const list = generateListString(true);
+            const subject = "Rental Inquiry: Polar Bear Films";
+            const body = `Dear Polar Bear Films Team,%0D%0A%0D%0AI am reaching out to inquire about the following equipment:%0D%0A%0D%0A${list}%0D%0A%0D%0APlease let me know the rental rates and availability.%0D%0A%0D%0ABest regards.`;
+            window.location.href = `mailto:himanshusharma280@gmail.com?subject=${subject}&body=${body}`;
+        }
+
+        // --- Initialization ---
+        window.onload = () => {
+            initTheme();
+            fetchInventory();
+        };
     </script>
 </body>
 </html>
