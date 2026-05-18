@@ -68,6 +68,11 @@
             opacity: 0 !important;
         }
 
+        /* Invert Logos for Light Headers */
+        .logo-invert {
+            filter: invert(1) brightness(0);
+        }
+
         /* Interactions */
         .social-icon {
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -171,7 +176,7 @@
     <header class="gsap-header fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-[60]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <div class="logo-container w-32 sm:w-40 md:w-56 cursor-pointer flex-shrink-0" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <img src="assets/diamond-surface-black.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
+                <img src="assets/diamond-surface-white.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain logo-invert" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
             </div>
 
             <!-- Desktop Category Nav -->
@@ -369,7 +374,7 @@
 
     <!-- Floating WhatsApp Default with Tooltip & Jiggle -->
     <div class="fixed bottom-6 rtl:right-6 ltr:left-6 z-[60] flex items-center">
-        <a href="https://wa.me/9647755554292" target="_blank" class="relative group flex items-center">
+        <a id="fab-wa" href="https://wa.me/9647755554292" target="_blank" class="relative group flex items-center">
             <!-- WhatsApp Prompt Tooltip -->
             <div class="absolute rtl:right-[120%] ltr:left-[120%] bg-[#094F52] text-white px-4 py-2.5 rounded-xl shadow-lg font-bold text-xs md:text-sm whitespace-nowrap opacity-90 transition-opacity">
                 <span data-i18n="wa_prompt">تواصل معنا بالضغط هنا</span>
@@ -541,7 +546,8 @@
                 reset_filters: "إعادة ضبط الفلاتر",
                 inquiry_msg_intro: "مرحباً دايموند سيرفيس! أنا مهتم بالاستفسار عن البلاط التالي:",
                 msg_size: "الحجم",
-                msg_finish: "التشطيب"
+                msg_finish: "التشطيب",
+                wa_default_msg: "مرحباً دايموند سيرفيس، أود الاستفسار عن منتجاتكم."
             },
             en: {
                 inquiry: "Inquiry",
@@ -582,7 +588,8 @@
                 reset_filters: "Reset Filters",
                 inquiry_msg_intro: "Hello Diamond Surface! I am interested in inquiring about the following tiles:",
                 msg_size: "Size",
-                msg_finish: "Finish"
+                msg_finish: "Finish",
+                wa_default_msg: "Hello Diamond Surface, I would like to inquire about your products."
             }
         };
 
@@ -624,6 +631,12 @@
             } else {
                 headerSocials.classList.remove('border-l', 'pl-4');
                 headerSocials.classList.add('border-r', 'pr-4');
+            }
+
+            // Update default floating WhatsApp link text
+            const fabWa = document.getElementById('fab-wa');
+            if (fabWa) {
+                fabWa.href = `https://wa.me/9647755554292?text=${encodeURIComponent(translations[currentLang].wa_default_msg)}`;
             }
         }
 
