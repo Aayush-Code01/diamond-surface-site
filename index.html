@@ -259,8 +259,8 @@
                     <!-- Top Row: Title & Main Categories -->
                     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2 md:gap-4">
                         <h2 class="text-2xl md:text-4xl font-bold text-white tracking-tight shrink-0" id="current-category-title-large" data-i18n="all_collections">جميع المجموعات</h2>
-                        <div class="flex flex-nowrap overflow-x-auto hide-scrollbar items-center gap-2 w-full lg:w-auto pb-1" id="main-cat-pills">
-                            <!-- Pills injected via JS -->
+                        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto pb-1" id="main-cat-pills">
+                            <!-- Pills injected via JS (Flex wrap prevents horizontal scroll) -->
                         </div>
                     </div>
 
@@ -354,7 +354,7 @@
             </div>
 
             <div class="mt-16 md:mt-20 mb-2 animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer text-[#D98835] bg-slate-800 p-3 md:p-4 rounded-full shadow-lg border border-slate-700" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-180"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg>
             </div>
 
             <footer class="pt-8 pb-4 border-t border-slate-800 w-full max-w-6xl mt-8">
@@ -413,17 +413,17 @@
                 <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-6 text-white"></h3>
                 
                 <div class="space-y-4 mb-8 text-slate-300">
-                    <div class="flex justify-between border-b border-slate-700 pb-3">
-                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide" data-i18n="size_thickness">الحجم والسماكة</span>
-                        <span id="modal-size" class="font-bold rtl:text-left ltr:text-right text-white" dir="ltr"></span>
+                    <div class="flex justify-between items-start gap-4 border-b border-slate-700 pb-3">
+                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide shrink-0" data-i18n="size_thickness">الحجم والسماكة</span>
+                        <span id="modal-size" class="font-bold text-sm md:text-base rtl:text-left ltr:text-right text-white" dir="ltr"></span>
                     </div>
-                    <div class="flex justify-between border-b border-slate-700 pb-3">
-                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide" data-i18n="finish">التشطيب</span>
-                        <span id="modal-finish" class="font-bold rtl:text-left ltr:text-right text-white"></span>
+                    <div class="flex justify-between items-start gap-4 border-b border-slate-700 pb-3">
+                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide shrink-0" data-i18n="finish">التشطيب</span>
+                        <span id="modal-finish" class="font-bold text-sm md:text-base rtl:text-left ltr:text-right text-white"></span>
                     </div>
-                    <div class="flex justify-between border-b border-slate-700 pb-3">
-                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide" data-i18n="subcategory">الفئة الفرعية</span>
-                        <span id="modal-sub" class="font-bold rtl:text-left ltr:text-right text-white"></span>
+                    <div class="flex justify-between items-start gap-4 border-b border-slate-700 pb-3">
+                        <span class="text-slate-400 font-bold text-sm md:text-base tracking-wide shrink-0" data-i18n="subcategory">الفئة الفرعية</span>
+                        <span id="modal-sub" class="font-bold text-sm md:text-base rtl:text-left ltr:text-right text-white"></span>
                     </div>
                 </div>
 
@@ -468,11 +468,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3" dir="ltr">
                     <a id="cart-wa-1" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3.5 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        WhatsApp (07755554292)
+                        WhatsApp (0775..)
                     </a>
                     <a id="cart-wa-2" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3.5 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        WhatsApp (07855554292)
+                        WhatsApp (0785..)
                     </a>
                 </div>
                 <a id="cart-email" href="#" class="w-full flex items-center justify-center gap-2 bg-[#138A8E] hover:bg-[#094F52] text-white py-3.5 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
@@ -819,7 +819,7 @@
 
             filteredProducts.forEach((product) => {
                 const isSelected = inquiryCart.some(item => item.id === product.id);
-                const displaySize = product.thickness ? `${product.size}-${product.thickness}` : product.size;
+                const displaySize = product.thickness ? `${product.size} - ${product.thickness}` : product.size;
 
                 const card = document.createElement('div');
                 card.className = `product-card rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer flex flex-col h-full relative group ${isSelected ? 'selected' : ''}`;
@@ -840,8 +840,8 @@
                             <h3 class="text-xs md:text-lg font-bold tracking-wide mb-1 md:mb-2 leading-tight text-white">${tData(product.name)}</h3>
                         </div>
                         <div class="mt-3 pt-3 md:mt-4 md:pt-4 border-t border-slate-700 space-y-1 md:space-y-2 text-slate-300">
-                            <p class="text-[10px] md:text-sm flex justify-between items-center"><span class="text-slate-400 font-bold tracking-wide">${t("size_thickness")}</span> <span class="font-bold text-slate-200" dir="ltr">${displaySize}</span></p>
-                            <p class="text-[10px] md:text-sm flex justify-between items-center"><span class="text-slate-400 font-bold tracking-wide">${t("finish")}</span> <span class="font-bold text-slate-200">${tData(product.finish)}</span></p>
+                            <div class="text-[10px] md:text-sm flex justify-between items-start gap-2"><span class="text-slate-400 font-bold tracking-wide shrink-0">${t("size_thickness")}</span> <span class="font-bold text-slate-200 rtl:text-left ltr:text-right" dir="ltr">${displaySize}</span></div>
+                            <div class="text-[10px] md:text-sm flex justify-between items-start gap-2"><span class="text-slate-400 font-bold tracking-wide shrink-0">${t("finish")}</span> <span class="font-bold text-slate-200 rtl:text-left ltr:text-right">${tData(product.finish)}</span></div>
                         </div>
                     </div>
                 `;
@@ -962,15 +962,15 @@
 
             let msg = t("inquiry_msg_intro") + "%0A%0A";
             inquiryCart.forEach((item, index) => {
-                const displaySize = item.thickness ? `${item.size}-${item.thickness}` : item.size;
+                const displaySize = item.thickness ? `${item.size} - ${item.thickness}` : item.size;
                 const displayFinish = tData(item.finish);
                 const displayName = tData(item.name);
                 msg += `${index + 1}. *${displayName}*%0A   ${t("msg_size")}: ${displaySize}%0A   ${t("msg_finish")}: ${displayFinish}%0A%0A`;
             });
 
-            document.getElementById('cart-wa-1').href = `https://wa.me/${INQUIRY_PHONE_1}?text=${msg}`;
-            document.getElementById('cart-wa-2').href = `https://wa.me/${INQUIRY_PHONE_2}?text=${msg}`;
-            document.getElementById('cart-email').href = `mailto:${INQUIRY_EMAIL}?subject=Bulk Enquiry: ${inquiryCart.length} Tiles&body=${msg.replace(/%0A/g, '%0D%0A')}`;
+            document.getElementById('cart-wa-1').href = `https://wa.me/${INQUIRY_PHONE_1}?text=${encodeURIComponent(msg)}`;
+            document.getElementById('cart-wa-2').href = `https://wa.me/${INQUIRY_PHONE_2}?text=${encodeURIComponent(msg)}`;
+            document.getElementById('cart-email').href = `mailto:${INQUIRY_EMAIL}?subject=${encodeURIComponent("Bulk Enquiry: " + inquiryCart.length + " Tiles")}&body=${encodeURIComponent(msg)}`;
         }
 
         function openCart() {
