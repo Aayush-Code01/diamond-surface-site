@@ -156,6 +156,17 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Jiggle Animation for WhatsApp */
+        @keyframes jiggle-alert {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            5%, 15% { transform: scale(1.1) rotate(-8deg); }
+            10%, 20% { transform: scale(1.1) rotate(8deg); }
+            25% { transform: scale(1) rotate(0deg); }
+        }
+        .animate-jiggle-alert {
+            animation: jiggle-alert 4s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="relative">
@@ -164,11 +175,11 @@
     <header class="gsap-header fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-[60]">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="logo-container w-40 md:w-56 cursor-pointer flex-shrink-0" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <img src="assets/diamond-surface-black.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
+                <img src="assets/diamond surface black.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
             </div>
 
-            <!-- Desktop Category Nav -->
-            <nav class="hidden lg:flex flex-nowrap overflow-x-auto hide-scrollbar items-center justify-start gap-4 text-sm font-bold tracking-widest uppercase flex-grow px-4 mx-4" id="desktop-cat-nav">
+            <!-- Desktop Category Nav - Increased Breakpoint to XL to avoid horizontal scrolling/cramping -->
+            <nav class="hidden xl:flex flex-wrap items-center justify-center gap-6 text-sm font-bold tracking-widest uppercase flex-grow px-8" id="desktop-cat-nav">
                 <!-- Injected via JS -->
             </nav>
 
@@ -199,15 +210,15 @@
                     <span id="header-cart-count" class="bg-[#D98835] text-white text-xs px-2 py-0.5 rounded-full">0</span>
                 </button>
 
-                <!-- Mobile Hamburger Toggle -->
-                <button class="lg:hidden flex items-center text-slate-900 hover:text-[#138A8E] transition rtl:mr-2 ltr:ml-2" onclick="toggleMobileMenu()">
+                <!-- Mobile Hamburger Toggle - Also updated breakpoint -->
+                <button class="xl:hidden flex items-center text-slate-900 hover:text-[#138A8E] transition rtl:mr-2 ltr:ml-2" onclick="toggleMobileMenu()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div id="mobile-dropdown" class="hidden lg:hidden bg-white border-t border-slate-200 absolute w-full left-0 top-full shadow-lg z-50">
+        <div id="mobile-dropdown" class="hidden xl:hidden bg-white border-t border-slate-200 absolute w-full left-0 top-full shadow-lg z-50">
             <nav class="flex flex-col py-2 max-h-[60vh] overflow-y-auto" id="mobile-cat-nav">
                 <!-- Injected via JS -->
             </nav>
@@ -353,10 +364,22 @@
         </button>
     </div>
 
-    <!-- Floating WhatsApp Default -->
-    <a href="https://wa.me/9647755554292" target="_blank" class="fixed bottom-6 rtl:right-6 ltr:left-6 z-[60] bg-[#25D366] hover:bg-[#1DA851] text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-105" id="fab-wa">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-    </a>
+    <!-- Floating WhatsApp Default with Tooltip & Jiggle -->
+    <div class="fixed bottom-6 rtl:right-6 ltr:left-6 z-[60] flex items-center">
+        <a href="https://wa.me/9647755554292" target="_blank" class="relative group flex items-center">
+            <!-- WhatsApp Prompt Tooltip -->
+            <div class="absolute rtl:right-[120%] ltr:left-[120%] bg-white text-slate-800 px-4 py-2 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] border border-slate-100 font-bold text-sm whitespace-nowrap opacity-90 transition-opacity">
+                <span data-i18n="wa_prompt">تواصل معنا بالضغط هنا</span>
+                <!-- Triangle Pointing to Icon -->
+                <div class="absolute top-1/2 -translate-y-1/2 rtl:-right-1.5 ltr:-left-1.5 w-0 h-0 border-y-[6px] border-y-transparent rtl:border-l-[8px] rtl:border-l-white ltr:border-r-[8px] ltr:border-r-white"></div>
+            </div>
+
+            <!-- WhatsApp Button Icon -->
+            <div class="bg-[#25D366] group-hover:bg-[#1DA851] text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform transform group-hover:scale-105 animate-jiggle-alert cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </div>
+        </a>
+    </div>
 
     <!-- Single Product Detail Modal -->
     <div id="product-modal" class="modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
@@ -433,11 +456,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3" dir="ltr">
                     <a id="cart-wa-1" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        <span>WhatsApp (07755554292)</span>
+                        WhatsApp (07755554292)
                     </a>
                     <a id="cart-wa-2" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.061-.303-.15-1.265-.466-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.297-.019-.458.13-.606.134-.133.303-.347.453-.523.151-.174.202-.296.301-.493.101-.197.05-.37-.025-.52-.075-.15-.672-1.62-.922-2.216-.24-.585-.487-.506-.673-.515-.175-.008-.372-.01-.572-.01-.197 0-.523.074-.796.42-.274.348-1.048 1.02-1.048 2.49 0 1.47 1.074 2.89 1.224 3.09.15.197 2.107 3.21 5.105 4.505.714.309 1.27.494 1.704.632.715.227 1.365.195 1.876.118.571-.086 1.767-.721 2.016-1.42.247-.697.247-1.293.174-1.42-.074-.125-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        <span>WhatsApp (07855554292)</span>
+                        WhatsApp (07855554292)
                     </a>
                 </div>
                 <a id="cart-email" href="#" class="w-full flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 px-4 rounded-xl font-bold transition shadow-sm text-sm tracking-wide">
@@ -484,7 +507,8 @@
                 finish: "التشطيب",
                 subcategory: "الفئة الفرعية",
                 select_category: "اختر الفئة",
-                lang_toggle: "English"
+                lang_toggle: "English",
+                wa_prompt: "تواصل معنا بالضغط هنا"
             },
             en: {
                 inquiry: "Inquiry",
@@ -518,7 +542,8 @@
                 finish: "Finish",
                 subcategory: "Subcategory",
                 select_category: "Select Category",
-                lang_toggle: "عربي"
+                lang_toggle: "عربي",
+                wa_prompt: "Reach out by clicking here"
             }
         };
 
@@ -609,7 +634,11 @@
                 aDesk.href = "#collections";
                 aDesk.className = `nav-link flex-shrink-0 cursor-pointer transition whitespace-nowrap pb-1 ${currentCategory === cat ? 'active text-[#138A8E] border-b-2 border-[#138A8E]' : 'text-slate-500 hover:text-[#138A8E] border-b-2 border-transparent'}`;
                 aDesk.innerText = displayCat;
-                aDesk.onclick = (e) => { e.preventDefault(); setCategory(cat); };
+                aDesk.onclick = (e) => { 
+                    e.preventDefault(); 
+                    setCategory(cat); 
+                    scrollToCollections(true); // Jump down explicitly
+                };
                 desktopNav.appendChild(aDesk);
 
                 // Mobile Header Dropdown Item
@@ -617,7 +646,12 @@
                 aMobile.href = "#collections";
                 aMobile.className = `block px-6 py-4 border-b border-slate-200 text-sm font-bold tracking-widest uppercase transition ${currentCategory === cat ? 'bg-[#138A8E]/10 text-[#138A8E]' : 'text-slate-500 hover:bg-slate-50 hover:text-[#138A8E]'}`;
                 aMobile.innerText = displayCat;
-                aMobile.onclick = (e) => { e.preventDefault(); setCategory(cat); closeMobileMenu(); };
+                aMobile.onclick = (e) => { 
+                    e.preventDefault(); 
+                    setCategory(cat); 
+                    closeMobileMenu(); 
+                    scrollToCollections(true); // Jump down explicitly
+                };
                 mobileNav.appendChild(aMobile);
 
                 // Main Category Pills (Sticky Catalog section)
@@ -625,7 +659,10 @@
                     const btnMain = document.createElement('button');
                     btnMain.className = `px-5 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentCategory === cat ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-300 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
                     btnMain.innerText = displayCat;
-                    btnMain.onclick = () => setCategory(cat);
+                    btnMain.onclick = () => {
+                        setCategory(cat);
+                        scrollToCollections();
+                    };
                     mainCatPills.appendChild(btnMain);
                 }
             });
@@ -754,19 +791,18 @@
             currentFinish = "All";
             renderNav();
             renderProducts();
-            scrollToCollections(true); // force scroll from anywhere
         }
 
         function setSize(size) {
             currentSize = size;
             renderProducts();
-            scrollToCollections(); // only scroll if far down
+            scrollToCollections(); 
         }
 
         function setFinish(fin) {
             currentFinish = fin;
             renderProducts();
-            scrollToCollections(); // only scroll if far down
+            scrollToCollections(); 
         }
 
         function scrollToCollections(force = false) {
