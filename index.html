@@ -59,8 +59,8 @@
 
         body {
             font-family: 'Space Grotesk Custom', 'Space Grotesk', sans-serif;
-            background-color: #ffffff; /* High contrast white theme */
-            color: #020617; /* Very dark slate for maximum readability */
+            background-color: #ffffff;
+            color: #020617;
             overflow-x: hidden;
         }
 
@@ -97,7 +97,7 @@
             border-color: #cbd5e1;
         }
         .product-card.selected {
-            border-color: #16a34a; /* Green highlight if selected */
+            border-color: #16a34a; 
             box-shadow: 0 0 0 2px #16a34a20;
         }
         .product-image-container {
@@ -111,7 +111,7 @@
             transform: scale(1.05);
         }
 
-        /* Custom Scrollbar (Light Theme) */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -145,7 +145,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Sticky Dropdown Utility */
         .dropdown-open {
             display: block !important;
         }
@@ -160,7 +159,7 @@
                 <img src="assets/logo-header.png" alt="Diamond Surface Logo" class="w-full h-auto object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHk9IjMwIiBmaWxsPSJibGFjayIgZm9udC1zaXplPSIyNCI+RElBTU9ORCBTVVJGQUNFPC90ZXh0Pjwvc3ZnPg=='">
             </div>
 
-            <!-- Desktop Category Nav (Moved to Header) -->
+            <!-- Desktop Category Nav -->
             <nav class="hidden lg:flex flex-wrap items-center justify-center gap-6 text-sm font-bold tracking-widest uppercase flex-grow px-8" id="desktop-cat-nav">
                 <!-- Injected via JS -->
             </nav>
@@ -199,7 +198,7 @@
             </div>
         </div>
 
-        <!-- Mobile Dropdown Menu (Moved to Header) -->
+        <!-- Mobile Dropdown Menu -->
         <div id="mobile-dropdown" class="hidden lg:hidden bg-white border-t border-slate-200 absolute w-full left-0 top-full shadow-lg z-50">
             <nav class="flex flex-col py-2 max-h-[60vh] overflow-y-auto" id="mobile-cat-nav">
                 <!-- Injected via JS -->
@@ -208,17 +207,16 @@
     </header>
 
     <!-- Main Content -->
-    <div class="scroll-content pt-20"> <!-- pt-20 to offset sticky header -->
+    <div class="scroll-content pt-20"> 
         
         <!-- Hero Section -->
         <section class="relative w-full h-[65vh] flex flex-col justify-center items-center overflow-hidden bg-slate-100">
-            <!-- Video Background Constrained to Hero without overlays/text/images -->
             <video autoplay muted loop playsinline preload="auto" disablePictureInPicture class="absolute inset-0 w-full h-full object-cover z-0">
                 <source src="assets/background.mp4" type="video/mp4">
             </video>
         </section>
 
-        <!-- New Geogres Inspired Copy Section -->
+        <!-- Geogres Inspired Copy Section -->
         <section class="py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto text-center">
             <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mb-6 uppercase tracking-wider" data-i18n="elevating_spaces">الارتقاء بالمساحات بأسطح فاخرة</h2>
             <div class="w-16 h-1 bg-slate-900 mx-auto mb-8"></div>
@@ -230,40 +228,56 @@
         <!-- Product Collections Section -->
         <section id="collections" class="w-full min-h-screen pb-20 bg-slate-50 pt-10">
             
-            <!-- Sticky Filter Navigation Bar (Categories + Subcategories/Finishes) -->
+            <!-- Sticky Filter Navigation Bar (Categories & Dropdown Filters) -->
             <div class="sticky top-[73px] z-40 bg-[#fdfbf7] border-y border-slate-200 shadow-md transition-all duration-300">
-                <div class="max-w-7xl mx-auto px-4 md:px-12 py-6 flex flex-col gap-6">
+                <div class="max-w-7xl mx-auto px-4 md:px-12 py-5 flex flex-col gap-4">
                     
                     <!-- Top Row: Title & Main Categories -->
-                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight shrink-0" id="current-category-title-large" data-i18n="all_collections">جميع المجموعات</h2>
-                        <div class="flex flex-wrap items-center gap-3 pb-2 lg:pb-0 w-full lg:w-auto" id="main-cat-pills">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight shrink-0" id="current-category-title-large" data-i18n="all_collections">جميع المجموعات</h2>
+                        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto" id="main-cat-pills">
                             <!-- Pills injected via JS -->
                         </div>
                     </div>
 
-                    <!-- Bottom Row: Subcategory (Size & Finish) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-                        <!-- Size -->
-                        <div class="flex flex-col gap-3 md:border-l md:pl-12" id="size-col-container">
-                            <h4 class="text-lg font-bold text-slate-900" data-i18n="choose_by_size">اختر حسب الحجم</h4>
-                            <div class="flex flex-wrap items-center gap-3 pb-2 md:pb-0" id="size-cat-nav">
-                                <!-- Pills injected via JS -->
+                    <!-- Bottom Row: Subcategory Dropdowns (Compact) -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 border-t border-slate-200 pt-4">
+                        
+                        <!-- Size Dropdown -->
+                        <div class="w-full sm:w-auto flex items-center gap-3">
+                            <label class="text-sm font-bold text-slate-700 whitespace-nowrap" data-i18n="choose_by_size">اختر حسب الحجم</label>
+                            <div class="relative w-full sm:w-56">
+                                <select id="size-dropdown" onchange="setSize(this.value)" class="w-full appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-bold rounded-lg focus:ring-[#138A8E] focus:border-[#138A8E] block px-4 py-2.5 outline-none cursor-pointer shadow-sm transition hover:border-slate-400">
+                                    <!-- Options injected via JS -->
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 rtl:left-0 ltr:right-0 flex items-center px-3 text-slate-500">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
                             </div>
                         </div>
-                        <!-- Finish -->
-                        <div class="flex flex-col gap-3">
-                            <h4 class="text-lg font-bold text-slate-900" data-i18n="choose_by_finish">اختر حسب التشطيب</h4>
-                            <div class="flex flex-wrap items-center gap-3 pb-2 md:pb-0" id="finish-cat-nav">
-                                <!-- Pills injected via JS -->
+
+                        <!-- Finish Dropdown -->
+                        <div class="w-full sm:w-auto flex items-center gap-3">
+                            <label class="text-sm font-bold text-slate-700 whitespace-nowrap" data-i18n="choose_by_finish">اختر حسب التشطيب</label>
+                            <div class="relative w-full sm:w-56">
+                                <select id="finish-dropdown" onchange="setFinish(this.value)" class="w-full appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-bold rounded-lg focus:ring-[#138A8E] focus:border-[#138A8E] block px-4 py-2.5 outline-none cursor-pointer shadow-sm transition hover:border-slate-400">
+                                    <!-- Options injected via JS -->
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 rtl:left-0 ltr:right-0 flex items-center px-3 text-slate-500">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
 
             <!-- Dynamic Product Grid -->
-            <div class="max-w-7xl mx-auto px-4 md:px-12 pt-10">
+            <div class="max-w-7xl mx-auto px-4 md:px-12 pt-8">
+                <div class="mb-4">
+                    <p class="text-slate-500 font-bold text-sm" id="product-count">Loading...</p>
+                </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8" id="product-grid">
                     <!-- Products injected via JS -->
                 </div>
@@ -529,18 +543,12 @@
             });
             document.getElementById('lang-text').innerText = translations[currentLang].lang_toggle;
             
-            // Adjust borders dynamically for RTL layout
-            const sizeCol = document.getElementById('size-col-container');
             const headerSocials = document.getElementById('header-socials');
             
             if (currentLang === 'ar') {
-                sizeCol.classList.remove('md:border-r', 'md:pr-12');
-                sizeCol.classList.add('md:border-l', 'md:pl-12');
                 headerSocials.classList.remove('border-r', 'pr-4');
                 headerSocials.classList.add('border-l', 'pl-4');
             } else {
-                sizeCol.classList.remove('md:border-l', 'md:pl-12');
-                sizeCol.classList.add('md:border-r', 'md:pr-12');
                 headerSocials.classList.remove('border-l', 'pl-4');
                 headerSocials.classList.add('border-r', 'pr-4');
             }
@@ -566,8 +574,8 @@
         const desktopNav = document.getElementById('desktop-cat-nav');
         const mobileNav = document.getElementById('mobile-cat-nav');
         const mainCatPills = document.getElementById('main-cat-pills');
-        const sizeNav = document.getElementById('size-cat-nav');
-        const finishNav = document.getElementById('finish-cat-nav');
+        const sizeDropdown = document.getElementById('size-dropdown');
+        const finishDropdown = document.getElementById('finish-dropdown');
         const productGrid = document.getElementById('product-grid');
         const currentCategoryTitleLarge = document.getElementById('current-category-title-large');
         const mobileMenuDropdown = document.getElementById('mobile-dropdown');
@@ -588,7 +596,7 @@
             categories.forEach(cat => {
                 const displayCat = cat === "All" ? t("all") : cat;
 
-                // Desktop Link inside Sticky Bar
+                // Desktop Link inside Header
                 const aDesk = document.createElement('a');
                 aDesk.href = "#collections";
                 aDesk.className = `nav-link cursor-pointer transition whitespace-nowrap pb-1 ${currentCategory === cat ? 'active text-[#138A8E] border-b-2 border-[#138A8E]' : 'text-slate-500 hover:text-[#138A8E] border-b-2 border-transparent'}`;
@@ -596,7 +604,7 @@
                 aDesk.onclick = (e) => { e.preventDefault(); setCategory(cat); };
                 desktopNav.appendChild(aDesk);
 
-                // Mobile Dropdown Item
+                // Mobile Header Dropdown Item
                 const aMobile = document.createElement('a');
                 aMobile.href = "#collections";
                 aMobile.className = `block px-6 py-4 border-b border-slate-200 text-sm font-bold tracking-widest uppercase transition ${currentCategory === cat ? 'bg-[#138A8E]/10 text-[#138A8E]' : 'text-slate-500 hover:bg-slate-50 hover:text-[#138A8E]'}`;
@@ -604,10 +612,10 @@
                 aMobile.onclick = (e) => { e.preventDefault(); setCategory(cat); closeMobileMenu(); };
                 mobileNav.appendChild(aMobile);
 
-                // Main Category Pills (Catalog section)
+                // Main Category Pills (Sticky Catalog section)
                 if (mainCatPills) {
                     const btnMain = document.createElement('button');
-                    btnMain.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentCategory === cat ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
+                    btnMain.className = `px-5 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentCategory === cat ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-300 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
                     btnMain.innerText = displayCat;
                     btnMain.onclick = () => setCategory(cat);
                     mainCatPills.appendChild(btnMain);
@@ -623,8 +631,8 @@
         }
 
         function renderSizeNav() {
-            if (!sizeNav) return;
-            sizeNav.innerHTML = '';
+            if (!sizeDropdown) return;
+            sizeDropdown.innerHTML = '';
             
             const availableProducts = currentCategory === "All" 
                 ? productsData 
@@ -638,18 +646,19 @@
 
             sizes.forEach(size => {
                 const displaySize = size === "All" ? t("all_sizes") : size;
-                const btn = document.createElement('button');
-                btn.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentSize === size ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
-                btn.innerText = displaySize;
-                btn.onclick = () => setSize(size);
-                btn.dir = "ltr"; // Keeps measurements LTR
-                sizeNav.appendChild(btn);
+                const option = document.createElement('option');
+                option.value = size;
+                option.innerText = displaySize;
+                // English measurement strings shouldn't get completely flipped, but dropdown handles it well. 
+                // We'll leave dir default for options so Arabic fits properly.
+                if (size === currentSize) option.selected = true;
+                sizeDropdown.appendChild(option);
             });
         }
 
         function renderFinishNav() {
-            if (!finishNav) return;
-            finishNav.innerHTML = '';
+            if (!finishDropdown) return;
+            finishDropdown.innerHTML = '';
             
             // Extract available finishes for current category
             const availableProducts = currentCategory === "All" 
@@ -665,11 +674,11 @@
 
             finishes.forEach(fin => {
                 const displayFin = fin === "All" ? t("all_finishes") : fin;
-                const btn = document.createElement('button');
-                btn.className = `px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition whitespace-nowrap border ${currentFinish === fin ? 'bg-[#138A8E] text-white border-[#138A8E] shadow-md' : 'bg-transparent text-slate-800 border-slate-400 hover:border-[#138A8E] hover:text-[#138A8E]'}`;
-                btn.innerText = displayFin;
-                btn.onclick = () => setFinish(fin);
-                finishNav.appendChild(btn);
+                const option = document.createElement('option');
+                option.value = fin;
+                option.innerText = displayFin;
+                if (fin === currentFinish) option.selected = true;
+                finishDropdown.appendChild(option);
             });
         }
 
@@ -742,21 +751,17 @@
 
         function setSize(size) {
             currentSize = size;
-            renderSizeNav();
             renderProducts();
-            scrollToCollections();
         }
 
         function setFinish(fin) {
             currentFinish = fin;
-            renderFinishNav();
             renderProducts();
-            scrollToCollections();
         }
 
         function scrollToCollections() {
             const collectionsEl = document.getElementById('collections');
-            const stickyOffset = 130; // Accommodate both nav bars
+            const stickyOffset = 130; 
             if(window.scrollY > collectionsEl.offsetTop - 50) {
                  window.scrollTo({ top: collectionsEl.offsetTop - stickyOffset, behavior: 'smooth' });
             }
@@ -764,7 +769,7 @@
 
         // Cart Logic
         function toggleCartItem(productId, event) {
-            if(event) event.stopPropagation(); // prevent modal from opening if clicking plus icon
+            if(event) event.stopPropagation(); 
 
             const product = productsData.find(p => p.id === productId);
             const index = inquiryCart.findIndex(item => item.id === productId);
@@ -776,7 +781,7 @@
             }
             
             updateCartUI();
-            renderProducts(); // Update card borders
+            renderProducts(); 
             updateModalCartButton(productId);
         }
 
@@ -797,7 +802,6 @@
             const container = document.getElementById('cart-items-container');
             const emptyMsg = document.getElementById('empty-cart-msg');
             
-            // clear existing items except empty message
             Array.from(container.children).forEach(child => {
                 if(child.id !== 'empty-cart-msg') child.remove();
             });
